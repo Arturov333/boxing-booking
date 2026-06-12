@@ -247,7 +247,9 @@ function updateSubmit() {
 // ============================================================
 
 function subscribeBookings() {
-  const q = query(bookingsRef, orderBy("date"), orderBy("time"));
+  // Order by date only (single-field index is automatic in Firestore);
+  // time is sorted client-side in renderAdminList, so no composite index needed.
+  const q = query(bookingsRef, orderBy("date"));
   onSnapshot(q, (snap) => {
     state.bookings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderTimes();
@@ -349,7 +351,7 @@ el.closeAdmin.addEventListener("click", () => {
 el.refreshAdmin.addEventListener("click", async () => {
   // onSnapshot already keeps things live; this forces a one-shot refresh
   try {
-    const snap = await getDocs(query(bookingsRef, orderBy("date"), orderBy("time")));
+    const snap = await getDocs(query(bookingsRef, orderBy("date")));
     state.bookings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderAdminList();
   } catch (err) {

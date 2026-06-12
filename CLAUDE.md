@@ -6,7 +6,10 @@
 - Чистий HTML/CSS/JS (без фреймворків), ES-модулі через CDN `gstatic`.
 - Дані: **Firebase Firestore**, колекція `bookings`. Проєкт: `boxing-booking-17e44`.
 - Real-time оновлення слотів через `onSnapshot`.
-- Хостинг: наразі локально (`python -m http.server 8000`). План — GitHub Pages.
+- Хостинг: **GitHub Pages** — https://arturov333.github.io/boxing-booking/
+- GitHub repo: https://github.com/Arturov333/boxing-booking (акаунт Arturov333, гілка main)
+- Деплой оновлень: `git add . && git commit -m "..." && git push` у теці проєкту (gh CLI у `C:/Program Files/GitHub CLI`).
+- Локальний тест: `python -m http.server 8000`.
 
 ## Файли
 - `index.html` — розмітка
