@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Запис на тренування — Бокс / Кікбоксинг</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-tag">Lviv · Personal Training</span>
+        <h1 class="brand-title">Boxing &amp; Kickboxing</h1>
+        <p class="brand-sub">Запис на персональне тренування</p>
+      </div>
+      <button id="open-admin" class="ghost-btn" type="button">Тренер</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ========== CLIENT VIEW ========== -->
+    <section id="client-view">
+      <!-- Step 1: Location -->
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">01</span>
+          <h2 class="step-title">Локація</h2>
+        </div>
+        <div id="location-grid" class="grid grid-2"></div>
+      </div>
+
+      <!-- Step 2: Week + Day -->
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">02</span>
+          <h2 class="step-title">День</h2>
+          <div class="week-nav">
+            <button id="prev-week" class="ghost-btn small" type="button">◀</button>
+            <span id="week-label" class="week-label">—</span>
+            <button id="next-week" class="ghost-btn small" type="button">▶</button>
+          </div>
+        </div>
+        <div id="day-grid" class="grid grid-6"></div>
+      </div>
+
+      <!-- Step 3: Time -->
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">03</span>
+          <h2 class="step-title">Час</h2>
+          <span id="slots-status" class="muted small"></span>
+        </div>
+        <div id="time-grid" class="grid grid-5"></div>
+      </div>
+
+      <!-- Step 4: Form -->
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">04</span>
+          <h2 class="step-title">Контакти</h2>
+        </div>
+        <form id="booking-form" class="form" autocomplete="off">
+          <div class="form-row">
+            <label>
+              <span>Ім'я *</span>
+              <input type="text" name="name" required minlength="2" maxlength="50" />
+            </label>
+            <label>
+              <span>Телефон *</span>
+              <input type="tel" name="phone" required pattern="[+0-9 ()\-]{7,20}" placeholder="+380..." />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span>Instagram</span>
+              <input type="text" name="instagram" maxlength="40" placeholder="@username" />
+            </label>
+            <label>
+              <span>Telegram</span>
+              <input type="text" name="telegram" maxlength="40" placeholder="@username" />
+            </label>
+          </div>
+          <div id="booking-summary" class="summary hidden"></div>
+          <button id="submit-btn" type="submit" class="primary-btn" disabled>Записатись</button>
+          <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ========== ADMIN VIEW ========== -->
+    <section id="admin-view" class="hidden">
+      <div class="admin-head">
+        <h2 class="step-title">Адмін-панель</h2>
+        <div class="admin-actions">
+          <button id="refresh-admin" class="ghost-btn small" type="button">Оновити список</button>
+          <button id="close-admin" class="ghost-btn small" type="button">Вихід</button>
+        </div>
+      </div>
+      <div id="admin-list" class="admin-list"></div>
+    </section>
+
+    <!-- ========== ADMIN LOGIN MODAL ========== -->
+    <div id="admin-modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <h3 class="step-title">Вхід тренера</h3>
+        <p class="muted small">Введіть код доступу</p>
+        <input id="admin-code-input" type="password" placeholder="Код" autocomplete="off" />
+        <div class="modal-actions">
+          <button id="admin-cancel" class="ghost-btn small" type="button">Скасувати</button>
+          <button id="admin-login" class="primary-btn small" type="button">Увійти</button>
+        </div>
+        <p id="admin-error" class="form-message error"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="muted small">© Personal Training · Lviv</p>
+    </div>
+  </footer>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
