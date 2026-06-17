@@ -453,6 +453,11 @@ body::before {
 /* review stars + submission */
 .review-stars { color: #E7B563; font-size: 14px; letter-spacing: 2px; line-height: 1; }
 .review-stars .off { color: var(--ink-faint); }
+.review-empty {
+  grid-column: 1 / -1; text-align: center; color: var(--ink-soft);
+  font-size: 15px; line-height: 1.6; padding: 40px 24px;
+  border: 1px dashed var(--line); border-radius: var(--radius);
+}
 .reviews-cta { text-align: center; margin-top: 28px; }
 .review.dyn { position: relative; }
 .review-del {

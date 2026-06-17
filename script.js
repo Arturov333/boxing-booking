@@ -81,21 +81,6 @@ const DURATION_LABEL = "60–80 хв";
 const DAYS_UA = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 const DAYS_FULL_UA = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"];
 
-// Showcase reviews (the 9 originally hardcoded on the page). The admin can push
-// these into the database with one click ("Імпортувати показові відгуки") so they
-// become fully manageable (reorder / delete) alongside real client reviews.
-const REVIEW_SEED = [
-  { name: "Роман", tag: "Схуднення", text: "Прийшов скинути вагу після сидячої роботи. За три місяці мінус 8 кг і витривалість, якої не було ніколи. Артур не жаліє, але й не ламає — усе по моєму темпу." },
-  { name: "Ростік", tag: "Бокс з нуля", text: "Боксом хотів займатись давно, але соромився груп. Формат 1-на-1 — те, що треба: ніхто не дивиться, помилки виправляються одразу. Техніка виросла дуже швидко." },
-  { name: "Вадім", tag: "Техніка", text: "Думав, що вже все вмію — ходив на бокс років десять тому. Артур за перше тренування показав, скільки дірок у захисті. Тепер працюємо системно, у спарингах різниця відчутна." },
-  { name: "Юра", tag: "Спліт", text: "Тренуюсь з другом у форматі спліт — драйвово, одне одного підганяємо. Ціна приємніша, а навантаження повноцінне. Раджу, якщо є з ким ходити." },
-  { name: "Роман", tag: "Розвантаження", text: "Після роботи це найкраще розвантаження для голови. Викладаєшся повністю — стрес зникає, спати став краще. А ще непомітно підтягнув форму." },
-  { name: "Бодя", tag: "Підготовка до бою", text: "Готувався до аматорського бою. Артур склав чіткий план: техніка, фізика, спаринги. Підготовка була жорстка, але на ринг вийшов упевнено. Дякую за роботу." },
-  { name: "Юля", tag: "Перший досвід", text: "Боялась, що бокс — це «не для дівчат». Виявилось навпаки: жодного тиску, усе пояснюють спокійно і з нуля. Тіло підтягнулось, а головне — з'явилась упевненість." },
-  { name: "Оля", tag: "Форма", text: "Хотіла нестандартне тренування замість зали — і не пожалкувала. Кардіо шалене, фігура змінилась за два місяці. І це реально цікаво, а не нудно, як на доріжці." },
-  { name: "Віка", tag: "Спліт із подругою", text: "Ходимо вдвох із подругою. Весело, безпечно й дуже ефективно — після тренування немає сил, але настрій топ. Артур уважний до техніки, поправляє кожен рух." },
-];
-
 // ============================================================
 // FIREBASE INIT (compat SDK — loaded via classic <script> in index.html)
 // ============================================================
@@ -857,18 +842,22 @@ function reviewsSorted() {
 
 function renderPublicReviews() {
   if (!reviewGrid) return;
-  // Remove previously rendered dynamic cards
+  // Remove previously rendered cards / placeholder
   reviewGrid.querySelectorAll(".review.dyn").forEach((n) => n.remove());
-  const staticCards = reviewGrid.querySelectorAll(".review:not(.dyn)");
+  const existingEmpty = reviewGrid.querySelector(".review-empty");
 
   if (state.reviews.length === 0) {
-    // No DB reviews → show the original showcase cards
-    staticCards.forEach((n) => { n.style.display = ""; });
+    // No reviews yet → friendly invitation to be the first
+    if (!existingEmpty) {
+      const empty = document.createElement("div");
+      empty.className = "review-empty";
+      empty.innerHTML = "Тут зʼявляться відгуки клієнтів.<br>Стань першим — натисни «Залишити відгук».";
+      reviewGrid.appendChild(empty);
+    }
     return;
   }
 
-  // DB reviews exist → hide showcase cards, render DB ones in chosen order
-  staticCards.forEach((n) => { n.style.display = "none"; });
+  if (existingEmpty) existingEmpty.remove();
   reviewsSorted().forEach((rev) => {
     const art = document.createElement("article");
     art.className = "review dyn";
@@ -907,7 +896,7 @@ function renderAdminReviews() {
   list.innerHTML = "";
   const sorted = reviewsSorted();
   if (sorted.length === 0) {
-    list.innerHTML = `<div class="empty-state">Відгуків у базі немає. Натисни «Імпортувати показові відгуки», щоб керувати ними, або додай новий.</div>`;
+    list.innerHTML = `<div class="empty-state">Відгуків поки немає. Зʼявляться, коли клієнти їх залишать.</div>`;
     return;
   }
   sorted.forEach((rev, idx) => {
@@ -952,7 +941,6 @@ async function moveReview(rev, dir) {
 
 function initAdminReviewTools() {
   const submit = document.getElementById("ar-submit");
-  const importBtn = document.getElementById("import-reviews");
 
   if (submit) submit.addEventListener("click", async () => {
     const name = (document.getElementById("ar-name").value || "").trim();
@@ -976,22 +964,6 @@ function initAdminReviewTools() {
       setTimeout(() => { msg.textContent = ""; }, 2500);
     } catch (err) {
       msg.textContent = "Помилка: " + err.message; msg.className = "form-message error";
-    }
-  });
-
-  if (importBtn) importBtn.addEventListener("click", async () => {
-    if (!confirm("Додати 9 показових відгуків у базу? Роби це один раз — далі ними можна керувати (порядок / видалення).")) return;
-    try {
-      importBtn.disabled = true;
-      await Promise.all(REVIEW_SEED.map((r, idx) => addDoc(reviewsRef, {
-        name: r.name, text: r.text, tag: r.tag, rating: 5,
-        order: idx, createdAt: serverTimestamp(),
-      })));
-      alert("✓ Показові відгуки додано в базу.");
-    } catch (err) {
-      alert("Помилка імпорту: " + err.message);
-    } finally {
-      importBtn.disabled = false;
     }
   });
 }
