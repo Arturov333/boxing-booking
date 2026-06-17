@@ -163,9 +163,8 @@ body::before {
     radial-gradient(125% 120% at 50% 15%, rgba(11,11,15,0.45) 0%, rgba(11,11,15,0.72) 55%, #0b0b0f 100%),
     linear-gradient(180deg, rgba(11,11,15,0.55) 0%, rgba(11,11,15,0.2) 35%, rgba(11,11,15,0.85) 100%);
 }
-@media (prefers-reduced-motion: reduce) {
-  .hero-video { display: none; }
-}
+/* Reduced-motion: keep the poster frame visible (don't blank the hero).
+   The video is paused via JS for these users — see hero-video script in index.html. */
 .hero-glow {
   position: absolute; top: -45%; left: 50%;
   width: 720px; height: 720px;

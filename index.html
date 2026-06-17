@@ -18,7 +18,7 @@
 </head>
 <body>
   <header class="site-header">
-    <video class="hero-video" autoplay muted loop playsinline preload="auto"
+    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto"
            poster="assets/hero-poster.jpg" aria-hidden="true">
       <source src="assets/hero.mp4" type="video/mp4" />
     </video>
@@ -608,6 +608,27 @@
 
   <!-- Gallery lightbox: standalone (no Firebase dependency) -->
   <script>
+    // Hero background video: reliably start it on mobile (autoplay attribute alone
+    // is often ignored). Respect reduced-motion by keeping the static poster frame.
+    (function () {
+      var hv = document.querySelector('.hero-video');
+      if (!hv) return;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { try { hv.removeAttribute('autoplay'); hv.pause(); } catch (e) {} return; }
+      hv.muted = true; // required for autoplay on iOS/Android
+      var tryPlay = function () { var p = hv.play(); if (p && p.catch) p.catch(function () {}); };
+      tryPlay();
+      hv.addEventListener('canplay', tryPlay, { once: true });
+      // Some mobile browsers only allow playback after a user gesture — retry once.
+      var onGesture = function () {
+        tryPlay();
+        document.removeEventListener('touchstart', onGesture);
+        document.removeEventListener('click', onGesture);
+      };
+      document.addEventListener('touchstart', onGesture, { passive: true });
+      document.addEventListener('click', onGesture);
+    })();
+
     (function () {
       var lb = document.getElementById('video-lightbox');
       var v = document.getElementById('vlb-video');
