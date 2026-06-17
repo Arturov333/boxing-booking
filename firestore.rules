@@ -1,0 +1,27 @@
+rules_version = '2';
+
+// Правила доступу до Firestore для сайту запису на тренування.
+// Модель: без Firebase Auth — доступ контролюється клієнтом (код тренера).
+// Для маленького персонального сайту відкриті правила — це норма.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Записи на тренування (створює клієнт або тренер, видаляє тренер)
+    match /bookings/{doc} {
+      allow read, create, delete: if true;
+      allow update: if false;
+    }
+
+    // Відгуки клієнтів (зірочки + текст). update дозволено — потрібно для
+    // зміни порядку відгуків (поле order) в адмін-панелі.
+    match /reviews/{doc} {
+      allow read, create, update, delete: if true;
+    }
+
+    // Налаштування сайту (розклад залів тощо) — читають усі, змінює адмін
+    match /settings/{doc} {
+      allow read, write: if true;
+    }
+  }
+}

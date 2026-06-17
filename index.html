@@ -18,6 +18,11 @@
 </head>
 <body>
   <header class="site-header">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto"
+           poster="assets/hero-poster.jpg" aria-hidden="true">
+      <source src="assets/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-video-veil" aria-hidden="true"></div>
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-grid-lines" aria-hidden="true"></div>
 
@@ -59,7 +64,7 @@
           <div class="stat-div" aria-hidden="true"></div>
           <div class="stat"><span class="stat-num">1:1</span><span class="stat-label">персонально</span></div>
           <div class="stat-div" aria-hidden="true"></div>
-          <div class="stat"><span class="stat-num">5</span><span class="stat-label">слотів/день</span></div>
+          <div class="stat"><span class="stat-num">6</span><span class="stat-label">днів/тиждень</span></div>
         </div>
       </div>
 
@@ -80,8 +85,263 @@
   <main class="container">
     <!-- ========== CLIENT VIEW ========== -->
     <section id="client-view">
+      <!-- ===== WHY ME ===== -->
+      <section class="sec" id="why">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Чому зі мною</span>
+          <h2 class="sec-title">Тренування, що дають <em>результат</em></h2>
+          <p class="sec-sub muted">Без груп і без магії — тільки техніка, робота і твій прогрес.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20v-5M10 20V9M16 20V4M22 20H2"/></svg>
+            </span>
+            <h3>Для всіх рівнів</h3>
+            <p>Бокс і кікбоксинг з нуля або вдосконалення техніки — підлаштовуюсь під тебе.</p>
+          </article>
+          <article class="feature">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            </span>
+            <h3>Індивідуально 1-на-1</h3>
+            <p>Повна увага тренера. Програма під твою ціль: форма, техніка чи спаринги.</p>
+          </article>
+          <article class="feature">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg>
+            </span>
+            <h3>Техніка від основ</h3>
+            <p>Правильні удари, захист і робота ніг — фундамент, який працює в спарингу й у житті.</p>
+          </article>
+          <article class="feature">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+            </span>
+            <h3>Сила і витривалість</h3>
+            <p>Функціональні навантаження: стаєш сильнішим, витривалішим і рухливішим.</p>
+          </article>
+          <article class="feature">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+            </span>
+            <h3>Дисципліна і результат</h3>
+            <p>Системні тренування з видимим прогресом за місяці — а не обіцянки.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== ABOUT TRAINER ===== -->
+      <section class="sec" id="about">
+        <div class="about-wrap">
+          <div class="about-media">
+            <img src="assets/Foto.jpg" alt="Артур — тренер з боксу та кікбоксингу" loading="lazy" />
+          </div>
+          <div class="about-body">
+            <span class="sec-eyebrow">Про тренера</span>
+            <h2 class="sec-title">Привіт, я <em>Артур</em></h2>
+            <p class="about-lead">Понад 10 років на рингу — тепер у твоєму куті.</p>
+            <p><strong>10+ років кікбоксингу</strong> зі змагальним досвідом і <strong>5+ років боксу</strong>. Тренуюсь і треную у Львові.</p>
+            <p>Працюю <strong>один-на-один</strong>: без груп і «потокових» занять — лише ти і твоя ціль. Ставлю техніку з нуля або шліфую те, що вже вмієш.</p>
+            <p>Без пафосу й чарівних обіцянок. Техніка, дисципліна, робота — і результат, який видно в дзеркалі й відчувається у спарингу.</p>
+            <div class="about-stats">
+              <div class="astat"><span class="astat-num">10+</span><span class="astat-label">років кікбоксинг</span></div>
+              <div class="astat"><span class="astat-num">5+</span><span class="astat-label">років бокс</span></div>
+              <div class="astat"><span class="astat-num">1:1</span><span class="astat-label">персонально</span></div>
+            </div>
+            <a href="#booking-start" class="ghost-btn about-cta">Записатись на тренування</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== GALLERY ===== -->
+      <section class="sec" id="gallery">
+        <div class="sec-head">
+          <span class="sec-eyebrow">В русі</span>
+          <h2 class="sec-title">Як це <em>виглядає</em></h2>
+          <p class="sec-sub muted">Натисни на відео, щоб подивитись.</p>
+        </div>
+        <div class="gallery-grid">
+          <button class="gtile" type="button" data-video="assets/gallery/g1-kick.mp4" style="background-image:url('assets/gallery/g1-kick.jpg')" aria-label="Дивитись відео — удар по мішку"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/g2-ring.mp4" style="background-image:url('assets/gallery/g2-ring.jpg')" aria-label="Дивитись відео — робота в рингу"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/g3-pads.mp4" style="background-image:url('assets/gallery/g3-pads.jpg')" aria-label="Дивитись відео — робота на лапах"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/g4-strength.mp4" style="background-image:url('assets/gallery/g4-strength.jpg')" aria-label="Дивитись відео — силова підготовка"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/g5-closeup.mp4" style="background-image:url('assets/gallery/g5-closeup.jpg')" aria-label="Дивитись відео — крупний план"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/g6-power.mp4" style="background-image:url('assets/gallery/g6-power.jpg')" aria-label="Дивитись відео — робота з вагою"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+        </div>
+      </section>
+
+      <!-- ===== RESULTS ===== -->
+      <section class="sec" id="results">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Результати за 3 місяці</span>
+          <h2 class="sec-title">Що ти <em>отримаєш</em></h2>
+          <p class="sec-sub muted">Реальні зміни при регулярних тренуваннях.</p>
+        </div>
+        <div class="result-grid">
+          <article class="result"><h3>Форма</h3><p>Підтягнутість і впевненість у власному тілі.</p></article>
+          <article class="result"><h3>Витривалість</h3><p>Більше повітря — і в залі, і в житті.</p></article>
+          <article class="result"><h3>Сила</h3><p>Потужніший удар і міцніший корпус.</p></article>
+          <article class="result"><h3>Техніка</h3><p>Чисті комбінації та грамотний захист.</p></article>
+          <article class="result"><h3>Дисципліна</h3><p>Звичка, що тримає у формі надовго.</p></article>
+        </div>
+      </section>
+
+      <!-- ===== FORMATS ===== -->
+      <section class="sec" id="formats">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Формати</span>
+          <h2 class="sec-title">Як можна <em>тренуватись</em></h2>
+          <p class="sec-sub muted">Обидва формати персональні — обери, що тобі ближче.</p>
+        </div>
+        <div class="format-grid">
+          <article class="format-card">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            </span>
+            <h3>1-на-1 · Персонально</h3>
+            <p>Тільки ти і тренер. Максимум уваги, темп і програма повністю під тебе — найшвидший прогрес.</p>
+          </article>
+          <article class="format-card">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.7a3.4 3.4 0 0 1 0 6.6"/><path d="M17.5 14.2A6.5 6.5 0 0 1 21.5 20"/></svg>
+            </span>
+            <h3>Спліт · Удвох</h3>
+            <p>Тренування вдвох — з другом, партнером чи парою. Драйвовіше, зі здоровим суперництвом і вигідніше за ціною.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== PRICING ===== -->
+      <section class="sec" id="pricing">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Ціни</span>
+          <h2 class="sec-title">Прозорі <em>тарифи</em></h2>
+          <p class="sec-sub muted">Одне тренування — 60–80 хв.</p>
+        </div>
+        <div class="price-grid">
+          <article class="price-card">
+            <h3>Персональне</h3>
+            <div class="price"><span class="price-num">800</span><span class="price-cur">грн</span></div>
+            <p class="price-note">1-на-1 з тренером · повна увага й темп під тебе</p>
+            <a href="#booking-start" class="primary-btn small">Записатись</a>
+          </article>
+          <article class="price-card featured">
+            <span class="price-badge">Вигідніше</span>
+            <h3>Спліт · удвох</h3>
+            <div class="price"><span class="price-num">1400</span><span class="price-cur">грн</span></div>
+            <p class="price-note">За двох — лише <strong>700 грн</strong> з особи</p>
+            <a href="#booking-start" class="primary-btn small">Записатись</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== REVIEWS ===== -->
+      <section class="sec" id="reviews">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Відгуки</span>
+          <h2 class="sec-title">Що кажуть мої <em>клієнти</em></h2>
+          <p class="sec-sub muted">Реальні люди, реальні результати.</p>
+        </div>
+        <div class="review-grid">
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Прийшов скинути вагу після сидячої роботи. За три місяці мінус 8 кг і витривалість, якої не було ніколи. Артур не жаліє, але й не ламає — усе по моєму темпу.</p>
+            <div class="review-by"><span class="review-ava">Р</span><span class="review-meta"><strong>Роман</strong><span class="review-tag">Схуднення</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Боксом хотів займатись давно, але соромився груп. Формат 1-на-1 — те, що треба: ніхто не дивиться, помилки виправляються одразу. Техніка виросла дуже швидко.</p>
+            <div class="review-by"><span class="review-ava">Р</span><span class="review-meta"><strong>Ростік</strong><span class="review-tag">Бокс з нуля</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Думав, що вже все вмію — ходив на бокс років десять тому. Артур за перше тренування показав, скільки дірок у захисті. Тепер працюємо системно, у спарингах різниця відчутна.</p>
+            <div class="review-by"><span class="review-ava">В</span><span class="review-meta"><strong>Вадім</strong><span class="review-tag">Техніка</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Тренуюсь з другом у форматі спліт — драйвово, одне одного підганяємо. Ціна приємніша, а навантаження повноцінне. Раджу, якщо є з ким ходити.</p>
+            <div class="review-by"><span class="review-ava">Ю</span><span class="review-meta"><strong>Юра</strong><span class="review-tag">Спліт</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Після роботи це найкраще розвантаження для голови. Викладаєшся повністю — стрес зникає, спати став краще. А ще непомітно підтягнув форму.</p>
+            <div class="review-by"><span class="review-ava">Р</span><span class="review-meta"><strong>Роман</strong><span class="review-tag">Розвантаження</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Готувався до аматорського бою. Артур склав чіткий план: техніка, фізика, спаринги. Підготовка була жорстка, але на ринг вийшов упевнено. Дякую за роботу.</p>
+            <div class="review-by"><span class="review-ava">Б</span><span class="review-meta"><strong>Бодя</strong><span class="review-tag">Підготовка до бою</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Боялась, що бокс — це «не для дівчат». Виявилось навпаки: жодного тиску, усе пояснюють спокійно і з нуля. Тіло підтягнулось, а головне — з'явилась упевненість.</p>
+            <div class="review-by"><span class="review-ava">Ю</span><span class="review-meta"><strong>Юля</strong><span class="review-tag">Перший досвід</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Хотіла нестандартне тренування замість зали — і не пожалкувала. Кардіо шалене, фігура змінилась за два місяці. І це реально цікаво, а не нудно, як на доріжці.</p>
+            <div class="review-by"><span class="review-ava">О</span><span class="review-meta"><strong>Оля</strong><span class="review-tag">Форма</span></span></div>
+          </article>
+          <article class="review">
+            <div class="review-stars" aria-label="5 з 5">★★★★★</div>
+            <p class="review-quote">Ходимо вдвох із подругою. Весело, безпечно й дуже ефективно — після тренування немає сил, але настрій топ. Артур уважний до техніки, поправляє кожен рух.</p>
+            <div class="review-by"><span class="review-ava">В</span><span class="review-meta"><strong>Віка</strong><span class="review-tag">Спліт із подругою</span></span></div>
+          </article>
+        </div>
+        <div class="reviews-cta">
+          <button id="open-review" type="button" class="ghost-btn">Залишити відгук</button>
+        </div>
+      </section>
+
+      <!-- ===== FAQ ===== -->
+      <section class="sec" id="faq">
+        <div class="sec-head">
+          <span class="sec-eyebrow">FAQ</span>
+          <h2 class="sec-title">Часті <em>питання</em></h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Чи можна займатись без досвіду?</summary>
+            <div class="faq-a">Так. Більшість моїх клієнтів починали з нуля. Перші тренування — це база: стійка, удари, захист. Темп підлаштовую під тебе.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Що брати з собою?</summary>
+            <div class="faq-a">Зручний спортивний одяг, кросівки, воду і рушник. Рукавиці та бинти можу позичити на старті, далі підкажу, що купити.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Скільки коштує тренування?</summary>
+            <div class="faq-a">Персональне тренування — 800 грн. Спліт (удвох) — 1400 грн за двох, тобто по 700 грн з особи. Одне заняття триває 60–80 хв.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Як часто тренуватись?</summary>
+            <div class="faq-a">Для відчутного результату — 2–3 рази на тиждень. Але навіть одне регулярне тренування краще, ніж жодного.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Де проходять тренування?</summary>
+            <div class="faq-a">Дві локації у Львові: Замарстинівська 55Б і Total Fitness (вул. В. Чорновола, 67г). Зручну обираєш при записі.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Чи підходить бокс для жінок?</summary>
+            <div class="faq-a">Однозначно так. Це чудове кардіо, координація і впевненість у собі. Жодного тиску — працюємо у твоєму темпі.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Як записатись?</summary>
+            <div class="faq-a">Прямо на сайті: обери локацію, день і час нижче. Або напиши мені в Instagram / Telegram.</div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ===== BOOKING ===== -->
+      <section class="sec sec-booking" id="booking-start">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Онлайн-запис</span>
+          <h2 class="sec-title">Обери <em>час</em> — це 30 секунд</h2>
+        </div>
+      </section>
       <!-- Step 1: Location -->
-      <div class="step" id="booking-start">
+      <div class="step">
         <div class="step-head">
           <span class="step-num">01</span>
           <h2 class="step-title">Локація</h2>
@@ -145,6 +405,48 @@
           <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
         </form>
       </div>
+
+      <!-- ===== MAP / LOCATIONS ===== -->
+      <section class="sec" id="map">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Локації</span>
+          <h2 class="sec-title">Де ми <em>тренуємось</em></h2>
+          <p class="sec-sub muted">Два зали у Львові — обери зручний при записі.</p>
+        </div>
+        <div class="map-grid">
+          <article class="map-card">
+            <div class="map-frame">
+              <iframe src="https://maps.google.com/maps?q=вул.%20Замарстинівська%2055Б,%20Львів&z=16&output=embed" loading="lazy" title="Зал на Замарстинівській 55Б" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="map-info"><strong>Зал №1</strong><span>вул. Замарстинівська, 55Б</span></div>
+          </article>
+          <article class="map-card">
+            <div class="map-frame">
+              <iframe src="https://maps.google.com/maps?q=Total%20Fitness%20Чорновола,%20Львів&z=16&output=embed" loading="lazy" title="Total Fitness, просп. Чорновола 67Г, Львів" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="map-info"><strong>Total Fitness</strong><span>просп. Чорновола, 67Г · Львів</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== CONTACTS / SOCIAL ===== -->
+      <section class="sec sec-contacts" id="contacts">
+        <div class="contacts-card">
+          <span class="sec-eyebrow">Залишаймось на зв'язку</span>
+          <h2 class="sec-title">Питання чи запис <em>напряму</em>?</h2>
+          <p class="sec-sub muted">Напиши в Instagram або Telegram — відповім особисто.</p>
+          <div class="social-btns">
+            <a class="social-btn ig" href="https://instagram.com/0.0.0.9.9.9" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              <span>@0.0.0.9.9.9</span>
+            </a>
+            <a class="social-btn tg" href="https://t.me/A_0_0_0_9" target="_blank" rel="noopener" aria-label="Telegram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.6 20.3c-.25 1.1-.9 1.38-1.83.86l-5.05-3.72-2.44 2.35c-.27.27-.5.5-1 .5l.36-5.16 9.4-8.49c.4-.36-.09-.56-.63-.2L5.18 13.1l-5-1.57c-1.08-.34-1.1-1.08.23-1.6l19.55-7.53c.9-.34 1.7.2 1.4 1.61.06-.46.06-.46 0 0z"/></svg>
+              <span>@A_0_0_0_9</span>
+            </a>
+          </div>
+        </div>
+      </section>
     </section>
 
     <!-- ========== ADMIN VIEW ========== -->
@@ -156,7 +458,83 @@
           <button id="close-admin" class="ghost-btn small" type="button">Вихід</button>
         </div>
       </div>
+
+      <!-- ===== BOOKINGS ===== -->
+      <h3 class="admin-section-title">Записи клієнтів</h3>
       <div id="admin-list" class="admin-list"></div>
+
+      <details class="admin-tool">
+        <summary>+ Додати запис вручну</summary>
+        <div class="admin-form">
+          <div class="admin-form-row">
+            <label>Локація
+              <select id="ab-location"></select>
+            </label>
+            <label>Дата
+              <input type="date" id="ab-date" />
+            </label>
+            <label>Час
+              <select id="ab-time"></select>
+            </label>
+          </div>
+          <div class="admin-form-row">
+            <label>Ім'я
+              <input type="text" id="ab-name" placeholder="Ім'я клієнта" maxlength="50" />
+            </label>
+            <label>Телефон
+              <input type="text" id="ab-phone" placeholder="необов'язково" maxlength="20" />
+            </label>
+          </div>
+          <p id="ab-note" class="muted small"></p>
+          <button id="ab-submit" class="primary-btn small" type="button">Додати запис</button>
+          <p id="ab-msg" class="form-message" role="status" aria-live="polite"></p>
+        </div>
+      </details>
+
+      <!-- ===== SCHEDULE ===== -->
+      <h3 class="admin-section-title">Розклад залів</h3>
+      <p class="muted small admin-hint">Години, коли ти приймаєш. Клієнт бачить лише вільні слоти в межах цих годин. Зніми галочку — зал у цей день не працює.</p>
+      <div id="schedule-editor" class="schedule-editor"></div>
+      <div class="schedule-actions">
+        <button id="schedule-save" class="primary-btn small" type="button">Зберегти розклад</button>
+        <button id="schedule-reset" class="ghost-btn small" type="button">Скинути до стандартного</button>
+      </div>
+      <p id="schedule-msg" class="form-message" role="status" aria-live="polite"></p>
+
+      <!-- ===== REVIEWS ===== -->
+      <h3 class="admin-section-title">Відгуки клієнтів</h3>
+      <p class="muted small admin-hint">Стрілками ▲▼ міняй порядок на сайті. Можеш додати свій відгук або видалити будь-який.</p>
+      <div class="admin-tool-row">
+        <button id="import-reviews" class="ghost-btn small" type="button">Імпортувати показові відгуки</button>
+      </div>
+      <details class="admin-tool">
+        <summary>+ Додати відгук</summary>
+        <div class="admin-form">
+          <div class="admin-form-row">
+            <label>Ім'я
+              <input type="text" id="ar-name" placeholder="Ім'я" maxlength="40" />
+            </label>
+            <label>Оцінка
+              <select id="ar-rating">
+                <option value="5">★★★★★ (5)</option>
+                <option value="4">★★★★ (4)</option>
+                <option value="3">★★★ (3)</option>
+                <option value="2">★★ (2)</option>
+                <option value="1">★ (1)</option>
+              </select>
+            </label>
+            <label>Тег
+              <input type="text" id="ar-tag" placeholder="напр. Бокс з нуля" maxlength="30" />
+            </label>
+          </div>
+          <label class="admin-full">Текст відгуку
+            <textarea id="ar-text" maxlength="400" rows="3" placeholder="Текст відгуку..."></textarea>
+          </label>
+          <button id="ar-submit" class="primary-btn small" type="button">Додати відгук</button>
+          <p id="ar-msg" class="form-message" role="status" aria-live="polite"></p>
+        </div>
+      </details>
+      <div id="admin-reviews" class="admin-list"></div>
     </section>
 
     <!-- ========== ADMIN LOGIN MODAL ========== -->
@@ -172,6 +550,34 @@
         <p id="admin-error" class="form-message error"></p>
       </div>
     </div>
+
+    <!-- ========== REVIEW MODAL ========== -->
+    <div id="review-modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Залишити відгук">
+      <div class="modal-card">
+        <h3 class="step-title">Залишити відгук</h3>
+        <p class="muted small">Постав оцінку й поділись враженням</p>
+        <div id="star-input" class="star-input" role="radiogroup" aria-label="Оцінка">
+          <button type="button" class="star" data-v="1" aria-label="1 зірка">★</button>
+          <button type="button" class="star" data-v="2" aria-label="2 зірки">★</button>
+          <button type="button" class="star" data-v="3" aria-label="3 зірки">★</button>
+          <button type="button" class="star" data-v="4" aria-label="4 зірки">★</button>
+          <button type="button" class="star" data-v="5" aria-label="5 зірок">★</button>
+        </div>
+        <input id="review-name" type="text" maxlength="40" placeholder="Ім'я" autocomplete="off" />
+        <textarea id="review-text" maxlength="400" rows="4" placeholder="Ваш відгук..."></textarea>
+        <div class="modal-actions">
+          <button id="review-cancel" class="ghost-btn small" type="button">Скасувати</button>
+          <button id="review-submit" class="primary-btn small" type="button">Надіслати</button>
+        </div>
+        <p id="review-msg" class="form-message" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <!-- ========== VIDEO LIGHTBOX ========== -->
+    <div id="video-lightbox" class="vlb hidden" role="dialog" aria-modal="true" aria-label="Перегляд відео">
+      <button id="vlb-close" class="vlb-close" type="button" aria-label="Закрити">✕</button>
+      <video id="vlb-video" class="vlb-video" playsinline controls loop></video>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -180,6 +586,43 @@
     </div>
   </footer>
 
-  <script type="module" src="script.js"></script>
+  <!-- Sticky mobile CTA (visible only on small screens) -->
+  <a href="#booking-start" class="sticky-cta">Записатись на тренування</a>
+
+  <!-- Gallery lightbox: standalone (no Firebase dependency) -->
+  <script>
+    (function () {
+      var lb = document.getElementById('video-lightbox');
+      var v = document.getElementById('vlb-video');
+      var closeBtn = document.getElementById('vlb-close');
+      if (!lb || !v) return;
+      function openLb(src) {
+        if (!src) return;
+        v.src = src;
+        lb.classList.remove('hidden');
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      function closeLb() {
+        v.pause();
+        v.removeAttribute('src');
+        v.load();
+        lb.classList.add('hidden');
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('.gtile'), function (t) {
+        t.addEventListener('click', function () { openLb(t.getAttribute('data-video')); });
+      });
+      if (closeBtn) closeBtn.addEventListener('click', closeLb);
+      lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !lb.classList.contains('hidden')) closeLb();
+      });
+    })();
+  </script>
+
+  <!-- Firebase (compat SDK — classic scripts; work from file:// and https) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

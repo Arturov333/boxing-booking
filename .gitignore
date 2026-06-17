@@ -1,0 +1,3 @@
+# Raw source videos (heavy, local-only) — NOT for deploy.
+# The web-optimized assets/hero.mp4 + poster ARE committed.
+assets/video mp4/
