@@ -82,6 +82,24 @@
     </div>
   </header>
 
+  <!-- Sticky anchor navigation -->
+  <nav class="site-nav" id="site-nav" aria-label="Навігація по сайту">
+    <div class="container nav-inner">
+      <div class="nav-links">
+        <a href="#why">Чому зі мною</a>
+        <a href="#about">Про тренера</a>
+        <a href="#gallery">Як це виглядає</a>
+        <a href="#results">Що ти отримаєш</a>
+        <a href="#pricing">Ціни</a>
+        <a href="#reviews">Відгуки</a>
+        <a href="#faq">FAQ</a>
+        <a href="#map">Локації</a>
+        <a href="#contacts">Контакти</a>
+      </div>
+      <a href="#booking-start" class="nav-cta">Записатись</a>
+    </div>
+  </nav>
+
   <main class="container">
     <!-- ========== CLIENT VIEW ========== -->
     <section id="client-view">
@@ -617,6 +635,24 @@
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && !lb.classList.contains('hidden')) closeLb();
       });
+    })();
+
+    // Sticky-nav scrollspy: highlight the link of the section currently in view.
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+      if (!links.length || !('IntersectionObserver' in window)) return;
+      var byId = {};
+      links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          links.forEach(function (a) { a.classList.remove('active'); });
+          var link = byId[en.target.id];
+          if (link) link.classList.add('active');
+        });
+      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+      ['why', 'about', 'gallery', 'results', 'pricing', 'reviews', 'faq', 'map', 'contacts']
+        .forEach(function (id) { var s = document.getElementById(id); if (s) obs.observe(s); });
     })();
   </script>
 
