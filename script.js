@@ -941,6 +941,22 @@ async function moveReview(rev, dir) {
 
 function initAdminReviewTools() {
   const submit = document.getElementById("ar-submit");
+  const clearBtn = document.getElementById("reviews-clear");
+
+  if (clearBtn) clearBtn.addEventListener("click", async () => {
+    const n = state.reviews.length;
+    if (n === 0) { alert("Відгуків немає."); return; }
+    if (!confirm(`Стерти ВСІ відгуки (${n})? Це не можна відмінити.`)) return;
+    try {
+      clearBtn.disabled = true;
+      await Promise.all(state.reviews.map((r) => deleteDoc(doc(db, "reviews", r.id))));
+      alert("✓ Усі відгуки стерто.");
+    } catch (err) {
+      alert("Помилка: " + err.message + "\n(Перевір, що у Firebase опубліковані правила.)");
+    } finally {
+      clearBtn.disabled = false;
+    }
+  });
 
   if (submit) submit.addEventListener("click", async () => {
     const name = (document.getElementById("ar-name").value || "").trim();
