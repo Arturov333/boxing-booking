@@ -93,6 +93,7 @@
         <a href="#pricing">Ціни</a>
         <a href="#reviews">Відгуки</a>
         <a href="#faq">FAQ</a>
+        <a href="#rules">Правила</a>
         <a href="#map">Локації</a>
         <a href="#contacts">Контакти</a>
       </div>
@@ -302,6 +303,67 @@
             <div class="faq-a">Прямо на сайті: обери локацію, день і час нижче. Або напиши мені в Instagram / Telegram.</div>
           </details>
         </div>
+      </section>
+
+      <!-- ===== RULES ===== -->
+      <section class="sec" id="rules">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Правила</span>
+          <h2 class="sec-title">Правила <em>тренувань</em></h2>
+          <p class="sec-sub muted">Коротко й чесно — щоб усім було комфортно.</p>
+        </div>
+        <div class="rules-list">
+          <article class="rule">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            </span>
+            <div class="rule-body">
+              <h3>1. Оплата</h3>
+              <p>Оплата здійснюється до або одразу після тренування.</p>
+            </div>
+          </article>
+          <article class="rule">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <div class="rule-body">
+              <h3>2. Скасування</h3>
+              <p>Скасування менш ніж за <strong>12 годин</strong> до початку тренування — заняття оплачується в повному обсязі.</p>
+              <div class="rule-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9.5 12l2 2 3.5-3.5"/></svg>
+                <span>У разі гострого захворювання тренування може бути перенесене за попереднім погодженням.</span>
+              </div>
+            </div>
+          </article>
+          <article class="rule">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 12-4.6"/><path d="M16.5 15.5l5 5M21.5 15.5l-5 5"/></svg>
+            </span>
+            <div class="rule-body">
+              <h3>3. Неявка</h3>
+              <p>У разі неявки без попередження тренування вважається проведеним та підлягає повній оплаті.</p>
+            </div>
+          </article>
+          <article class="rule">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="13" r="8"/><path d="M13 9v4l2.5 1.5"/><path d="M2 9h5M2 13h4"/></svg>
+            </span>
+            <div class="rule-body">
+              <h3>4. Запізнення</h3>
+              <p>Час тренування не продовжується. Вартість заняття залишається незмінною.</p>
+            </div>
+          </article>
+          <article class="rule">
+            <span class="feat-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+            </span>
+            <div class="rule-body">
+              <h3>5. Перенесення</h3>
+              <p>Перенесення тренування можливе лише за попереднім погодженням та за наявності вільного часу.</p>
+            </div>
+          </article>
+        </div>
+        <p class="rules-tagline platinum">Дисципліна. Відповідальність. Результат.</p>
       </section>
 
       <!-- ===== BOOKING ===== -->
@@ -625,7 +687,7 @@
           if (link) link.classList.add('active');
         });
       }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-      ['why', 'about', 'gallery', 'results', 'pricing', 'reviews', 'faq', 'map', 'contacts']
+      ['why', 'about', 'gallery', 'results', 'pricing', 'reviews', 'faq', 'rules', 'map', 'contacts']
         .forEach(function (id) { var s = document.getElementById(id); if (s) obs.observe(s); });
     })();
   </script>
