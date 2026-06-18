@@ -636,8 +636,26 @@ body::before {
   content: 'Недоступно'; display: block; font-size: 10px; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 5px;
 }
+/* Yellow — uncertain (other hall, just before a booking). Clickable: sends a request. */
+.tile.maybe {
+  border-color: #E0A92E;
+  background: color-mix(in srgb, #E7B563 16%, var(--surface));
+  color: var(--ink);
+}
+.tile.maybe:hover:not(:disabled) { border-color: #C8881A; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.tile.maybe:not(.selected)::after {
+  content: 'Уточнити'; display: block; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #B07A12; margin-top: 5px;
+}
 .tile:disabled { cursor: not-allowed; opacity: 0.45; }
 .tile .tile-sub { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); margin-top: 5px; }
+
+/* Booking summary — note shown when the chosen slot is a request (yellow). */
+.summary-note {
+  margin-top: 10px; padding: 10px 12px; border-radius: var(--radius-sm);
+  border: 1px solid #E0A92E; background: color-mix(in srgb, #E7B563 12%, var(--surface));
+  color: var(--ink); font-size: 13px; font-weight: 500; line-height: 1.45;
+}
 
 /* ================= WEEK NAV ================= */
 .week-nav { margin-left: auto; display: flex; align-items: center; gap: 6px; }
@@ -730,6 +748,9 @@ body::before {
 .admin-hint { margin: -6px 0 14px; }
 .admin-tool-row { margin: 0 0 12px; }
 .tag-manual { color: var(--accent); font-weight: 600; }
+.tag-request { color: #B07A12; font-weight: 700; }
+.admin-row.pending { border-color: #E0A92E; background: color-mix(in srgb, #E7B563 9%, var(--surface)); }
+.admin-row-actions { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
 
 /* collapsible admin tools (add booking / add review) */
 .admin-tool {

@@ -7,10 +7,10 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Записи на тренування (створює клієнт або тренер, видаляє тренер)
+    // Записи на тренування (створює клієнт або тренер, видаляє/підтверджує тренер).
+    // update потрібен, щоб тренер підтверджував «жовті» запити (pending → confirmed).
     match /bookings/{doc} {
-      allow read, create, delete: if true;
-      allow update: if false;
+      allow read, create, update, delete: if true;
     }
 
     // Відгуки клієнтів (зірочки + текст). update дозволено — потрібно для

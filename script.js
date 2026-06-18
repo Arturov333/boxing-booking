@@ -67,13 +67,14 @@ let scheduleHours = cloneHours(DEFAULT_HOURS);
 const SLOT_STEP_MIN = 60;
 
 // Session duration & cross-location travel buffer (minutes).
-// A session can run up to TRAINING_MAX_MIN. The trainer can't be in two places:
-//  - same location: next booking must start ≥ TRAINING_MAX_MIN after another
-//  - other location: must also add TRAVEL_MIN on top (duration + travel)
-// Example: booking at Чорновола 12:00 blocks Замарстинівська until 13:40 (12:00 + 80 + 20).
+// A session runs 60–TRAINING_MAX_MIN; moving between halls needs TRAVEL_MIN on top.
+// Blocking applies ONLY across locations — see slotConflict() for the full rule.
+//  • Same location as a booking: trainer is on-site → only the exact slot is taken,
+//    every other time stays open.
+//  • Other location: trainer can't be in two halls at once →
+//    SLOT_BLOCK_CROSS = session + travel window (100 хв).
 const TRAINING_MAX_MIN = 80;
 const TRAVEL_MIN = 20;
-const SLOT_BLOCK_SAME = TRAINING_MAX_MIN;               // 80
 const SLOT_BLOCK_CROSS = TRAINING_MAX_MIN + TRAVEL_MIN; // 100
 const DURATION_LABEL = "60–80 хв";
 
@@ -97,6 +98,7 @@ const db = firebase.firestore();
 function collection(dbi, name) { return dbi.collection(name); }
 function doc(dbi, name, id) { return dbi.collection(name).doc(id); }
 function addDoc(ref, data) { return ref.add(data); }
+function updateDoc(ref, data) { return ref.update(data); }
 function deleteDoc(ref) { return ref.delete(); }
 function serverTimestamp() { return firebase.firestore.FieldValue.serverTimestamp(); }
 function orderBy(field) { return { __orderBy: field }; }
@@ -248,17 +250,32 @@ function isPast(dateISO, time) {
   return dt.getTime() < Date.now();
 }
 
-// Cross-location conflict: a candidate slot is blocked if it overlaps any existing
-// booking, accounting for session duration (same location) + travel time (other location).
-// Returns: "" (free) | "taken" (exact same location+time) | "buffer" (blocked by duration/travel).
+// Status of a candidate slot vs. existing bookings. Blocking is cross-location only:
+//  • Same location → only the exact time is "taken"; all other slots stay free
+//    (the trainer is already in that hall and can take anyone).
+//  • Other location → the trainer can't be in two halls at once:
+//      - same time, or a slot AFTER the booking still inside the travel+session
+//        window (100 хв) → "busy" (red): the trainer physically can't get there;
+//      - a slot BEFORE the booking inside that window → "ask" (yellow): the session
+//        is 60–80 хв + travel, so the trainer might not make it → confirm, don't auto-book.
+// Returns: "" (free) | "ask" (yellow) | "busy" (red, other hall) | "taken" (red, same hall+time).
+const STATUS_RANK = { "": 0, ask: 1, busy: 2, taken: 3 };
 function slotConflict(locationId, dateISO, time) {
   const S = timeToMin(time);
   let result = "";
+  const bump = (s) => { if (STATUS_RANK[s] > STATUS_RANK[result]) result = s; };
   for (const b of state.bookings) {
     if (b.date !== dateISO || !b.time) continue;
-    if (b.location === locationId && b.time === time) return "taken";
-    const gap = b.location === locationId ? SLOT_BLOCK_SAME : SLOT_BLOCK_CROSS;
-    if (Math.abs(S - timeToMin(b.time)) < gap) result = "buffer";
+    if (b.location === locationId) {
+      // Same hall — trainer is on-site, only the exact slot is taken.
+      if (b.time === time) return "taken";
+      continue;
+    }
+    // Other hall.
+    const B = timeToMin(b.time);
+    if (S === B) bump("busy");                                  // trainer is busy then
+    else if (S > B) { if (S - B < SLOT_BLOCK_CROSS) bump("busy"); }  // after: can't travel in time
+    else { if (B - S < SLOT_BLOCK_CROSS) bump("ask"); }         // before: might not make it
   }
   return result;
 }
@@ -372,12 +389,21 @@ function renderTimes() {
     if (conflict === "taken") {
       b.classList.add("booked");      // exact slot already booked here → "Зайнято"
       b.disabled = true;
-    } else if (conflict === "buffer") {
-      b.classList.add("unavail");     // blocked by duration/travel buffer → "Недоступно"
+    } else if (conflict === "busy") {
+      b.classList.add("unavail");     // trainer in the other hall → "Недоступно"
       b.disabled = true;
     } else if (past) {
       b.disabled = true;
       b.classList.add("booked");
+    } else if (conflict === "ask") {
+      // Yellow — selectable, but submitting sends a request (not an auto-booking).
+      b.classList.add("maybe");
+      if (state.selectedTime === time) b.classList.add("selected");
+      b.addEventListener("click", () => {
+        state.selectedTime = time;
+        renderTimes();
+        updateSubmit();
+      });
     } else {
       if (state.selectedTime === time) b.classList.add("selected");
       b.addEventListener("click", () => {
@@ -397,13 +423,17 @@ function updateSubmit() {
     const loc = LOCATIONS.find(l => l.id === state.selectedLocation);
     const dayIndex = new Date(state.selectedDate).getDay();
     const dayName = DAYS_FULL_UA[(dayIndex + 6) % 7]; // Mon=0
+    const isRequest = slotConflict(state.selectedLocation, state.selectedDate, state.selectedTime) === "ask";
     el.summary.classList.remove("hidden");
     el.summary.innerHTML = `
       <strong>${loc.name}</strong> · ${loc.address}<br />
       <strong>${dayName}</strong>, ${fmtDateShort(new Date(state.selectedDate))} о <strong>${state.selectedTime}</strong>
+      ${isRequest ? `<div class="summary-note">🟡 Це попередній час. Тренер може не встигнути переїхати з іншого залу — форма надішле <strong>запит</strong>, а не остаточний запис. Тренер підтвердить час і напише тобі.</div>` : ``}
     `;
+    el.submitBtn.textContent = isRequest ? "Надіслати запит" : "Записатись";
   } else {
     el.summary.classList.add("hidden");
+    el.submitBtn.textContent = "Записатись";
   }
 }
 
@@ -445,20 +475,32 @@ el.form.addEventListener("submit", async (e) => {
     createdAt: serverTimestamp(),
   };
 
-  // Race-condition guard: re-check the slot is still free (incl. cross-location buffer)
-  if (slotConflict(data.location, data.date, data.time) !== "") {
+  // Race-condition guard: re-check the slot. "taken"/"busy" → hard block;
+  // "ask" (yellow) is allowed through but saved as a request awaiting confirmation.
+  const conflict = slotConflict(data.location, data.date, data.time);
+  if (conflict === "taken" || conflict === "busy") {
     showFormMessage("Цей час щойно став недоступний. Обери інший.", "error");
     state.selectedTime = null;
     renderTimes();
     updateSubmit();
     return;
   }
+  const isRequest = conflict === "ask";
+  if (isRequest) {
+    data.status = "request";
+    data.pending = true;
+  }
 
   try {
     el.submitBtn.disabled = true;
-    showFormMessage("Записуємо...", "");
+    showFormMessage(isRequest ? "Надсилаємо запит..." : "Записуємо...", "");
     await addDoc(bookingsRef, data);
-    showFormMessage(`✓ Записано! ${data.name}, до зустрічі ${fmtDateShort(new Date(data.date))} о ${data.time}`, "success");
+    showFormMessage(
+      isRequest
+        ? `✓ Запит надіслано! ${data.name}, тренер перевірить, чи встигає на ${data.time} (${fmtDateShort(new Date(data.date))}), і напише тобі.`
+        : `✓ Записано! ${data.name}, до зустрічі ${fmtDateShort(new Date(data.date))} о ${data.time}`,
+      "success"
+    );
     el.form.reset();
     state.selectedTime = null;
     renderTimes();
@@ -575,19 +617,28 @@ function renderAdminList() {
       ? `<a href="tel:${b.phone.replace(/[^+0-9]/g, "")}">${escapeHtml(b.phone)}</a>`
       : "";
     const manualTag = b.manual ? ` · <span class="tag-manual">вручну</span>` : "";
+    const isPending = b.pending || b.status === "request";
+    const reqTag = isPending ? ` · <span class="tag-request">⚠ запит — підтвердь час</span>` : "";
+    const confirmBtn = isPending
+      ? `<button class="ghost-btn small" data-confirm="${b.id}">Підтвердити</button>`
+      : "";
 
     row.innerHTML = `
       <div class="info">
-        <div class="when">${dayName} · ${fmtDateShort(date)} · ${b.time} · ${escapeHtml(locName)}${manualTag}</div>
+        <div class="when">${dayName} · ${fmtDateShort(date)} · ${b.time} · ${escapeHtml(locName)}${manualTag}${reqTag}</div>
         <div class="who"><strong style="color:var(--ink)">${escapeHtml(b.name)}</strong></div>
         <div class="contacts">
           ${phoneLink}${phoneLink && (igLink || tgLink) ? " · " : ""}${igLink}${igLink && tgLink ? " · " : ""}${tgLink}
         </div>
       </div>
-      <button class="ghost-btn small danger" data-id="${b.id}">Скасувати</button>
+      <div class="admin-row-actions">
+        ${confirmBtn}
+        <button class="ghost-btn small danger" data-id="${b.id}">Скасувати</button>
+      </div>
     `;
+    if (isPending) row.classList.add("pending");
 
-    row.querySelector("button").addEventListener("click", async () => {
+    row.querySelector("[data-id]").addEventListener("click", async () => {
       if (!confirm(`Скасувати запис: ${b.name} — ${b.date} ${b.time}?`)) return;
       try {
         await deleteDoc(doc(db, "bookings", b.id));
@@ -595,6 +646,17 @@ function renderAdminList() {
         alert("Помилка скасування: " + err.message);
       }
     });
+
+    const confirmEl = row.querySelector("[data-confirm]");
+    if (confirmEl) {
+      confirmEl.addEventListener("click", async () => {
+        try {
+          await updateDoc(doc(db, "bookings", b.id), { pending: false, status: "confirmed" });
+        } catch (err) {
+          alert("Помилка підтвердження: " + err.message);
+        }
+      });
+    }
 
     el.adminList.appendChild(row);
   });
@@ -660,7 +722,9 @@ async function submitManualBooking() {
 
   const conflict = slotConflict(data.location, data.date, data.time);
   if (conflict !== "") {
-    const why = conflict === "taken" ? "цей слот уже зайнятий" : "це конфліктує з буфером між тренуваннями";
+    const why = conflict === "taken" ? "цей слот уже зайнятий"
+      : conflict === "busy" ? "у цей час ти в іншому залі (не встигнеш переїхати)"
+      : "час близький до тренування в іншому залі — можеш не встигнути";
     if (!confirm(`Увага: ${why}. Додати все одно?`)) return;
   }
 
