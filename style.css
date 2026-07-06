@@ -164,6 +164,9 @@ body::before {
   transition: opacity 1.2s var(--ease);
 }
 .hero-video.is-active { opacity: 1; }
+/* 2nd hero clip is an outdoor track shot — subject sits low in frame,
+   so anchor the crop lower (otherwise only sky/trees show on wide screens). */
+.hero-media .hero-video:nth-of-type(2) { object-position: center 72%; }
 .hero-video-veil {
   position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
