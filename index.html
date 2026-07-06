@@ -18,10 +18,15 @@
 </head>
 <body>
   <header class="site-header">
-    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto"
-           poster="assets/hero-poster.jpg" aria-hidden="true">
-      <source src="assets/hero.mp4" type="video/mp4" />
-    </video>
+    <div class="hero-media" aria-hidden="true">
+      <video class="hero-video is-active" autoplay muted loop playsinline webkit-playsinline preload="auto"
+             poster="assets/hero-poster.jpg">
+        <source src="assets/hero.mp4" type="video/mp4" />
+      </video>
+      <video class="hero-video" muted loop playsinline webkit-playsinline preload="none">
+        <source src="assets/hero2.mp4" type="video/mp4" />
+      </video>
+    </div>
     <div class="hero-video-veil" aria-hidden="true"></div>
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-grid-lines" aria-hidden="true"></div>
@@ -167,12 +172,14 @@
           <p class="sec-sub muted">Натисни на відео, щоб подивитись.</p>
         </div>
         <div class="gallery-grid">
-          <button class="gtile" type="button" data-video="assets/gallery/g1-kick.mp4" style="background-image:url('assets/gallery/g1-kick.jpg')" aria-label="Дивитись відео — удар по мішку"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/g2-ring.mp4" style="background-image:url('assets/gallery/g2-ring.jpg')" aria-label="Дивитись відео — робота в рингу"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/g3-pads.mp4" style="background-image:url('assets/gallery/g3-pads.jpg')" aria-label="Дивитись відео — робота на лапах"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/g4-strength.mp4" style="background-image:url('assets/gallery/g4-strength.jpg')" aria-label="Дивитись відео — силова підготовка"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/g5-closeup.mp4" style="background-image:url('assets/gallery/g5-closeup.jpg')" aria-label="Дивитись відео — крупний план"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/g6-power.mp4" style="background-image:url('assets/gallery/g6-power.jpg')" aria-label="Дивитись відео — робота з вагою"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal1-ring.mp4" style="background-image:url('assets/gallery/gal1-ring.jpg')" aria-label="Дивитись відео — робота в рингу"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal5-pads.mp4" style="background-image:url('assets/gallery/gal5-pads.jpg')" aria-label="Дивитись відео — робота на лапах"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal2-bag.mp4" style="background-image:url('assets/gallery/gal2-bag.jpg')" aria-label="Дивитись відео — удар по мішку"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal6-her.mp4" style="background-image:url('assets/gallery/gal6-her.jpg')" aria-label="Дивитись відео — тренування клієнтки"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal3-night.mp4" style="background-image:url('assets/gallery/gal3-night.jpg')" aria-label="Дивитись відео — вечірнє тренування"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal7-spar.mp4" style="background-image:url('assets/gallery/gal7-spar.jpg')" aria-label="Дивитись відео — спаринг на майданчику"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal4-outdoor.mp4" style="background-image:url('assets/gallery/gal4-outdoor.jpg')" aria-label="Дивитись відео — тренування на вулиці"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/gallery/gal8-mitts.mp4" style="background-image:url('assets/gallery/gal8-mitts.jpg')" aria-label="Дивитись відео — лапи на майданчику"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
         </div>
       </section>
 
@@ -611,25 +618,58 @@
 
   <!-- Gallery lightbox: standalone (no Firebase dependency) -->
   <script>
-    // Hero background video: reliably start it on mobile (autoplay attribute alone
-    // is often ignored). Respect reduced-motion by keeping the static poster frame.
+    // Hero background: crossfade carousel of two videos.
+    // First video (hero.mp4) autoplays immediately (priority load); the second
+    // (hero2.mp4) is lazy (preload="none") and only fetched after window load,
+    // so it never blocks First Load. Respect reduced-motion (static poster).
     (function () {
-      var hv = document.querySelector('.hero-video');
-      if (!hv) return;
+      var media = document.querySelector('.hero-media');
+      if (!media) return;
+      var vids = Array.prototype.slice.call(media.querySelectorAll('.hero-video'));
+      if (!vids.length) return;
+      vids.forEach(function (v) { v.muted = true; }); // required for autoplay on iOS/Android
+      var tryPlay = function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) { try { hv.removeAttribute('autoplay'); hv.pause(); } catch (e) {} return; }
-      hv.muted = true; // required for autoplay on iOS/Android
-      var tryPlay = function () { var p = hv.play(); if (p && p.catch) p.catch(function () {}); };
-      tryPlay();
-      hv.addEventListener('canplay', tryPlay, { once: true });
-      // Some mobile browsers only allow playback after a user gesture — retry once.
+      if (reduce) {
+        vids.forEach(function (v) { try { v.removeAttribute('autoplay'); v.pause(); } catch (e) {} });
+        return; // keep the static poster frame of the active video
+      }
+
+      // Start the first video (retry on canplay + first gesture for stubborn mobile browsers).
+      tryPlay(vids[0]);
+      vids[0].addEventListener('canplay', function () { tryPlay(vids[0]); }, { once: true });
       var onGesture = function () {
-        tryPlay();
+        tryPlay(vids[0]);
         document.removeEventListener('touchstart', onGesture);
         document.removeEventListener('click', onGesture);
       };
       document.addEventListener('touchstart', onGesture, { passive: true });
       document.addEventListener('click', onGesture);
+
+      if (vids.length < 2) return;
+      var second = vids[1];
+
+      // Lazily fetch the second clip after first paint so it never competes with hero.mp4.
+      var second2Ready = false;
+      var loadSecond = function () {
+        if (second2Ready) return;
+        second2Ready = true;
+        try { second.preload = 'auto'; second.load(); } catch (e) {}
+      };
+      if (document.readyState === 'complete') setTimeout(loadSecond, 1500);
+      else window.addEventListener('load', function () { setTimeout(loadSecond, 1500); });
+
+      // Crossfade between the two clips every ~9s.
+      var current = 0, INTERVAL = 9000;
+      setInterval(function () {
+        loadSecond();
+        var next = current === 0 ? 1 : 0;
+        tryPlay(vids[next]);
+        vids[current].classList.remove('is-active');
+        vids[next].classList.add('is-active');
+        current = next;
+      }, INTERVAL);
     })();
 
     (function () {

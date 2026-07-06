@@ -1,6 +1,8 @@
 # Raw source videos (heavy, local-only) — NOT for deploy.
 # The web-optimized assets/hero.mp4 + poster ARE committed.
 assets/video mp4/
+# Raw source of the 2nd hero clip (80MB) — only the compressed hero2.mp4 is deployed.
+assets/Hero2.MOV
 
 # Джерело постера правил — правила перенесено в код як текстову секцію (#rules).
 правила.jpg
