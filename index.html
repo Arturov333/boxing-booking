@@ -660,8 +660,8 @@
       if (document.readyState === 'complete') setTimeout(loadSecond, 1500);
       else window.addEventListener('load', function () { setTimeout(loadSecond, 1500); });
 
-      // Crossfade between the two clips every ~9s.
-      var current = 0, INTERVAL = 9000;
+      // Crossfade between the two clips every ~3.5s.
+      var current = 0, INTERVAL = 3500;
       setInterval(function () {
         loadSecond();
         var next = current === 0 ? 1 : 0;
