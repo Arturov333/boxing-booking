@@ -298,7 +298,9 @@ body::after {
 }
 
 /* ===== Scroll-reveal (клас ставить premium.js) ============== */
-.pm-reveal { opacity: 0; transform: perspective(1000px) translateY(56px) rotateX(20deg); transform-origin: 50% 100%; will-change: transform, opacity; }
+.pm-reveal { opacity: 0; transform: perspective(1200px) translateY(42px) rotateX(9deg); transform-origin: 50% 50%; will-change: transform, opacity; }
+/* Високі секції — плоский reveal без rotateX (3D-поворот на великій висоті лишав порожнечу) */
+#premium.pm-reveal, #reviews.pm-reveal, #why.pm-reveal, #gallery.pm-reveal { transform: translateY(42px); }
 .pm-reveal.pm-in {
   opacity: 1; transform: perspective(1000px) translateY(0) rotateX(0deg);
   transition: opacity 0.8s var(--pm-ease), transform 0.9s var(--pm-ease);
@@ -422,6 +424,18 @@ body::after {
   box-shadow: 0 0 14px 1px rgba(216, 178, 95, 0.35);
 }
 .brand-sub { font-size: 17px; margin-top: 26px; }
+
+/* Hero трохи компактніший на телефоні */
+@media (max-width: 560px) {
+  .site-header { padding-top: 42px; }
+  .hero-center { padding: 26px 0 32px; }
+  .hero-logo { width: min(220px, 54vw); margin-bottom: 12px; }
+  .brand-tag { margin-bottom: 16px; }
+  .hero-wordmark.wm-stack { gap: 7px; }
+  .hero-wordmark.wm-stack .wm-line { font-size: clamp(38px, 11vw, 58px); }
+  .hero-wordmark.wm-stack .wm-rule { width: clamp(64px, 30vw, 150px); }
+  .brand-sub { font-size: 15px; margin-top: 16px; }
+}
 
 /* [4] Дисплейна типографіка заголовків + повітря шапки секцій */
 .sec-title { font-size: clamp(33px, 6.2vw, 66px); line-height: 1.02; letter-spacing: -0.022em; }
