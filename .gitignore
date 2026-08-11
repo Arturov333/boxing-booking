@@ -6,3 +6,26 @@ assets/Hero2.MOV
 
 # Джерело постера правил — правила перенесено в код як текстову секцію (#rules).
 правила.jpg
+
+# === Додано перед деплоєм ===
+# Копірайтні завантаження — НІКОЛИ не публікувати
+assets/наклеки/
+
+# Невикористані експерименти (мертвий код) — не деплоїмо
+assets/fish/
+assets/stickers/
+assets/badges/
+assets/lantern-k.png
+assets/lantern.png
+assets/lightbeam-k.png
+assets/lightbeam.png
+assets/lightpool.png
+assets/dust.png
+
+# Dev-only / тимчасові
+nocache_server.py
+CONTEXT-SUMMARY.md
+Logo.PNG
+
+# Firebase functions node_modules (бекенд деплоїться окремо)
+functions/node_modules/

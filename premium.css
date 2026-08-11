@@ -1,0 +1,945 @@
+/* ============================================================
+   PREMIUM LAYER — ARTUR Performance Club
+   Візуальний шар поверх style.css. Нічого не перейменовує,
+   не чіпає логіку запису/адмінки. Легко відкотити: прибрати
+   <link premium.css> та <script premium.js> з index.html.
+
+   Код-палітра: глибокий графіт (НЕ #000) + золото/шампань + платина.
+   ============================================================ */
+
+:root {
+  /* --- Золото / шампань --- */
+  --gold: #E7C089;
+  --gold-2: #C9A36A;
+  --gold-3: #A9823F;
+  --gold-soft: rgba(231, 192, 137, 0.14);
+  --gold-line: rgba(231, 192, 137, 0.42);
+  --champagne: linear-gradient(135deg, #f7e9cd 0%, #e7c089 34%, #c9a36a 58%, #f2ddb6 100%);
+  --pm-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Золотий металевий текст (парний до .platinum) */
+.pm-gold {
+  background: var(--champagne);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ===== Тема-залежна атмосфера ================================ */
+[data-theme="dark"] {
+  --pm-atm-1: rgba(231, 192, 137, 0.10);   /* золоте світло */
+  --pm-atm-2: rgba(96, 120, 168, 0.14);    /* холодний синій */
+  --pm-atm-3: rgba(150, 120, 90, 0.10);    /* тепла бронза */
+  --pm-atm-4: rgba(200, 206, 220, 0.06);   /* платинова димка */
+  --pm-vignette: rgba(0, 0, 0, 0.55);
+  --pm-grain: 0.05;
+  --pm-card-top: rgba(255, 255, 255, 0.05);
+  --pm-card-line: rgba(231, 192, 137, 0.16);
+  --pm-spot: rgba(231, 192, 137, 0.10);
+}
+[data-theme="light"] {
+  --pm-atm-1: rgba(201, 163, 106, 0.14);
+  --pm-atm-2: rgba(120, 140, 180, 0.12);
+  --pm-atm-3: rgba(180, 150, 110, 0.10);
+  --pm-atm-4: rgba(120, 130, 150, 0.06);
+  --pm-vignette: rgba(60, 55, 45, 0.10);
+  --pm-grain: 0.03;
+  --pm-card-top: rgba(255, 255, 255, 0.7);
+  --pm-card-line: rgba(201, 163, 106, 0.22);
+  --pm-spot: rgba(201, 163, 106, 0.12);
+}
+
+/* Запобіжник проти горизонтального скролу від full-bleed фонів.
+   overflow-x:clip не ламає sticky-навігацію (на відміну від hidden). */
+html { overflow-x: clip; }
+
+/* ===== Багатший фон замість плоского графіту ================= */
+/* Глибокий графіт із м'якою віньєткою по краях (НЕ #000) */
+[data-theme="dark"] body {
+  background:
+    radial-gradient(135% 105% at 50% 42%, transparent 56%, var(--pm-vignette) 100%),
+    radial-gradient(120% 90% at 50% -10%, #14161d 0%, #0d0e13 44%, #0a0b0f 100%);
+}
+[data-theme="light"] body {
+  background:
+    radial-gradient(135% 105% at 50% 42%, transparent 62%, var(--pm-vignette) 100%),
+    radial-gradient(120% 90% at 50% -10%, #fbfbfd 0%, #f4f4f6 60%, #eeeef1 100%);
+}
+
+/* 4-шаровий «aurora»-дрейф (перекриває drift зі style.css) */
+body::before {
+  content: "";
+  position: fixed; inset: -10%; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(38% 46% at 16% 16%, var(--pm-atm-1), transparent 68%),
+    radial-gradient(42% 52% at 84% 22%, var(--pm-atm-2), transparent 70%),
+    radial-gradient(46% 50% at 72% 82%, var(--pm-atm-3), transparent 72%),
+    radial-gradient(50% 55% at 24% 92%, var(--pm-atm-4), transparent 74%);
+  animation: pm-aurora 34s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+@keyframes pm-aurora {
+  0%   { transform: translate3d(0, 0, 0) scale(1);      opacity: 0.9; }
+  50%  { transform: translate3d(1.5%, -2%, 0) scale(1.08); opacity: 1; }
+  100% { transform: translate3d(-2%, 1.5%, 0) scale(1.12); opacity: 0.85; }
+}
+
+/* Плівкове зерно — тонкий шар, інтенсивність через --pm-grain */
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: var(--pm-grain, 0.05);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ===== Ширший, «редакторський» лейаут ======================== */
+.container { max-width: 1040px; }
+.sec { margin: 104px 0; }
+@media (max-width: 640px) { .sec { margin: 66px 0; } }
+
+/* ===== Eyebrow із золотою рискою ============================= */
+.sec-eyebrow, .brand-tag {
+  position: relative;
+}
+.sec-head .sec-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--gold);
+}
+.sec-head .sec-eyebrow::before {
+  content: ""; width: 26px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-line));
+}
+.sec-head .sec-eyebrow::after {
+  content: ""; width: 26px; height: 1px;
+  background: linear-gradient(90deg, var(--gold-line), transparent);
+}
+
+/* Заголовки секцій: курсив-акцент лишаємо платиновим, додаємо повітря */
+.sec-title { letter-spacing: -0.02em; }
+
+/* ===== Full-bleed атмосферні фони окремих секцій ============= */
+/* .pm-has-bg + .pm-section-bg інжектить premium.js (лише власні кадри) */
+.pm-has-bg { position: relative; z-index: 0; isolation: isolate; }
+.pm-section-bg {
+  position: absolute; left: 50%; top: -8%;
+  width: 100vw; height: 116%;
+  transform: translateX(-50%);
+  z-index: -1; pointer-events: none; overflow: hidden;
+}
+.pm-section-bg::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--pm-img);
+  background-size: cover; background-position: center;
+  opacity: 0.10; filter: grayscale(0.35) contrast(1.05);
+  transform: scale(1.06);
+  -webkit-mask-image: radial-gradient(120% 80% at 50% 50%, #000 32%, transparent 78%);
+          mask-image: radial-gradient(120% 80% at 50% 50%, #000 32%, transparent 78%);
+}
+[data-theme="light"] .pm-section-bg::before { opacity: 0.07; }
+.pm-section-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%),
+    radial-gradient(60% 50% at 50% 50%, var(--gold-soft), transparent 70%);
+}
+
+/* ===== Картки з глибиною + spotlight під курсором =========== */
+.feature, .result, .price-card, .format-card, .map-card, .rule, .faq-item, .contacts-card {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(180deg, var(--pm-card-top), transparent 60%);
+  border-color: var(--pm-card-line);
+  transition:
+    transform 0.34s var(--pm-ease),
+    box-shadow 0.34s var(--pm-ease),
+    border-color 0.34s var(--pm-ease);
+}
+/* mouse-follow підсвітка (координати ставить premium.js) */
+.feature::after, .result::after, .price-card::after,
+.format-card::after, .map-card::after, .rule::after {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  pointer-events: none; opacity: 0;
+  background: radial-gradient(240px 240px at var(--pm-mx, 50%) var(--pm-my, 0%),
+              var(--pm-spot), transparent 70%);
+  transition: opacity 0.3s var(--pm-ease);
+}
+.feature:hover::after, .result:hover::after, .price-card:hover::after,
+.format-card:hover::after, .map-card:hover::after, .rule:hover::after { opacity: 1; }
+.feature:hover, .result:hover, .format-card:hover, .rule:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--pm-card-line);
+}
+/* тримати вміст карток над підсвіткою */
+.feature > *, .result > *, .price-card > *, .format-card > *,
+.map-card > *, .rule > * { position: relative; z-index: 1; }
+.feat-ic { color: var(--gold); }
+
+/* ===== Преміум-тариф «Спліт»: золота рамка + свічення ======= */
+.price-card.featured {
+  border: 1px solid transparent;
+  background-image:
+    linear-gradient(180deg, var(--pm-card-top), transparent 60%),
+    linear-gradient(var(--surface), var(--surface)),
+    var(--champagne);
+  background-origin: border-box;
+  background-clip: padding-box, padding-box, border-box;
+  box-shadow: 0 18px 50px rgba(201, 163, 106, 0.16);
+}
+.price-card.featured:hover { box-shadow: 0 24px 64px rgba(201, 163, 106, 0.26); }
+.price-card .price-badge {
+  background: var(--champagne); color: #201804; border: none;
+}
+.price-card .price-num { letter-spacing: -0.03em; }
+
+/* ===== HERO — вау-полірування ============================== */
+.hero-video-veil {
+  background:
+    linear-gradient(180deg, rgba(6,7,10,0.30) 0%, rgba(6,7,10,0.10) 32%, rgba(6,7,10,0.55) 78%, var(--bg) 100%),
+    radial-gradient(70% 60% at 50% 32%, rgba(231,192,137,0.10), transparent 70%);
+}
+[data-theme="light"] .hero-video-veil {
+  background:
+    linear-gradient(180deg, rgba(20,20,26,0.28) 0%, rgba(20,20,26,0.06) 34%, rgba(244,244,246,0.55) 80%, var(--bg) 100%),
+    radial-gradient(70% 60% at 50% 32%, rgba(201,163,106,0.12), transparent 70%);
+}
+/* Hero eyebrow — без «рамки»: чистий золотий капс + тонка риска зверху */
+.brand-tag {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  color: var(--gold) !important;
+  letter-spacing: 0.34em;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+}
+.brand-tag::before {
+  content: ""; display: block; width: 34px; height: 1px; margin: 0 auto 14px;
+  background: linear-gradient(90deg, transparent, var(--gold-line), transparent);
+}
+.hero-wordmark em { /* «&» — шампань */
+  background: var(--champagne);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+/* Achievement-плашки під героєм (інжектить premium.js) */
+.pm-hero-badges {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  margin-top: 20px;
+}
+.pm-hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 15px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: 0.01em;
+  color: var(--ink);
+  border: 1px solid var(--gold-line);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.pm-hero-badge svg { width: 15px; height: 15px; color: var(--gold); }
+
+/* ===== Смуга scroll-прогресу (золото) — інжектить JS ======== */
+.pm-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0;
+  z-index: 200; pointer-events: none;
+  background: var(--champagne);
+  box-shadow: 0 0 12px rgba(231, 192, 137, 0.55);
+  transition: width 0.1s linear;
+}
+.admin-active .pm-progress { opacity: 0; }
+
+/* ===== Активний пункт меню — золоте свічення ================ */
+.nav-links a.active {
+  border-color: var(--gold-2) !important;
+  background: linear-gradient(180deg, var(--select), var(--select)) !important;
+  box-shadow: 0 6px 20px rgba(201, 163, 106, 0.28);
+}
+.nav-links a.active::after {
+  content: ""; position: absolute; left: 14px; right: 14px; bottom: 4px; height: 1px;
+  background: var(--champagne);
+}
+.nav-links a { position: relative; }
+
+/* ===== Соковиті мікроанімації запису ======================== */
+/* Поява плитки-слоту зі стаґером (JS ставить --pm-i) */
+.tile { transition: transform 0.16s var(--pm-ease), border-color 0.2s var(--pm-ease), box-shadow 0.24s var(--pm-ease), background 0.2s var(--pm-ease); }
+.tile:hover:not(:disabled):not(.booked):not(.selected) { border-color: var(--gold-2); }
+
+/* Вибраний слот — «пружний» pop + золоте кільце-пульс */
+.tile.selected { animation: pm-pop 0.34s var(--pm-ease); }
+.tile.selected::after {
+  content: ""; position: absolute; inset: -3px; border-radius: inherit;
+  border: 2px solid var(--gold);
+  opacity: 0; animation: pm-ring 0.6s var(--pm-ease) forwards;
+  pointer-events: none;
+}
+@keyframes pm-pop {
+  0%   { transform: scale(0.96); }
+  55%  { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+@keyframes pm-ring {
+  0%   { opacity: 0.9; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+
+/* Кнопка «Записатись» готова (не disabled) — тонкий золотий подих */
+#submit-btn:not(:disabled) {
+  box-shadow: 0 12px 34px rgba(201, 163, 106, 0.22);
+}
+.summary:not(.hidden) { animation: pm-slide-up 0.4s var(--pm-ease); }
+@keyframes pm-slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Scroll-reveal (клас ставить premium.js) ============== */
+.pm-reveal { opacity: 0; transform: perspective(1000px) translateY(56px) rotateX(20deg); transform-origin: 50% 100%; will-change: transform, opacity; }
+.pm-reveal.pm-in {
+  opacity: 1; transform: perspective(1000px) translateY(0) rotateX(0deg);
+  transition: opacity 0.8s var(--pm-ease), transform 0.9s var(--pm-ease);
+}
+
+/* ===== Магнітні кнопки — плавне повернення ================== */
+.primary-btn, .ghost-btn { transition: transform 0.2s var(--pm-ease), box-shadow 0.24s var(--pm-ease), background 0.2s var(--pm-ease), border-color 0.2s var(--pm-ease); }
+
+/* ===== Галерея — легкий преміум-хвіст ======================= */
+.gtile { border-color: var(--pm-card-line); }
+.gtile .gplay { border: 1px solid var(--gold-line); }
+.gtile:hover .gplay { background: var(--gold-soft); }
+
+/* ===== Контакти-картка: тепле свічення ====================== */
+.contacts-card::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(60% 80% at 50% 0%, var(--gold-soft), transparent 70%);
+}
+.contacts-card > * { position: relative; z-index: 1; }
+
+/* Платинова лінія-теглайн у правилах — додати золотий відтінок краям */
+.rules-tagline.platinum { opacity: 0.96; }
+
+/* ===== Повага до prefers-reduced-motion ==================== */
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none !important; }
+  .pm-reveal { opacity: 1 !important; transform: none !important; }
+  .tile.selected { animation: none !important; }
+  .tile.selected::after { animation: none !important; opacity: 0 !important; }
+}
+
+/* ===== Дрібні мобільні правки ============================== */
+@media (max-width: 560px) {
+  .pm-hero-badge { font-size: 11.5px; padding: 7px 12px; }
+  .pm-section-bg::before { opacity: 0.08; }
+}
+
+/* ============================================================
+   ORCHESTRATOR PLAN — застосовано з мультиагентного аудиту (6 агентів)
+   Напрям: теплий графіт рівня mayweather + золото/шампань = КОЛІР ДІЇ,
+   платина — вторинний метал. Блок у кінці файлу коректно перекриває
+   правила вище. Легко відкотити: видалити цей блок.
+   ============================================================ */
+
+/* [2] Токен золота-як-тексту (контраст у світлій темі) + spring */
+:root { --pm-spring: cubic-bezier(0.34, 1.45, 0.5, 1); }
+[data-theme="dark"]  { --gold-ink: var(--gold); }
+[data-theme="light"] { --gold-ink: #7C5E22; }
+.sec-head .sec-eyebrow { color: var(--gold-ink); }
+.feat-ic { color: var(--gold-ink); }
+[data-theme="light"] .rules-tagline.platinum {
+  background: none; -webkit-text-fill-color: currentColor; color: var(--gold-3);
+}
+
+/* [1] Головна CTA героя — золото (money shot) */
+.hero-cta {
+  background: var(--champagne) !important;
+  color: #201804 !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  box-shadow: 0 16px 44px rgba(201, 163, 106, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.85) !important;
+  animation: pm-cta-breathe 3.4s var(--pm-ease) infinite;
+}
+.hero-cta:hover { filter: brightness(1.05); }
+@keyframes pm-cta-breathe {
+  0%, 100% { box-shadow: 0 16px 44px rgba(201, 163, 106, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.85); }
+  50%      { box-shadow: 0 20px 56px rgba(201, 163, 106, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.85); }
+}
+
+/* [11] Теплий графіт-«дно» + перерозподіл aurora на користь золота */
+[data-theme="dark"] {
+  --pm-atm-1: rgba(231, 192, 137, 0.14);
+  --pm-atm-2: rgba(96, 120, 168, 0.10);
+  --pm-atm-3: rgba(150, 120, 90, 0.12);
+}
+[data-theme="dark"] body {
+  background:
+    radial-gradient(135% 105% at 50% 42%, transparent 56%, var(--pm-vignette) 100%),
+    radial-gradient(85% 60% at 50% 118%, rgba(150, 116, 74, 0.10), transparent 70%),
+    radial-gradient(120% 90% at 50% -10%, #16171f 0%, #0e0f15 46%, #0a0b0f 100%);
+}
+
+/* [7] Тепло у героя + укрупнений wordmark */
+.hero-video-veil {
+  background:
+    radial-gradient(60% 55% at 50% 30%, rgba(231, 192, 137, 0.16), transparent 66%),
+    linear-gradient(180deg, rgba(6,7,10,0.30) 0%, rgba(6,7,10,0.10) 32%, rgba(6,7,10,0.55) 78%, var(--bg) 100%);
+}
+.hero-stats .stat-div { background: var(--gold-line) !important; }
+.hero-center { position: relative; }
+.hero-center::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6%; height: 56%;
+  z-index: -1; pointer-events: none;
+  background: radial-gradient(58% 100% at 50% 100%, var(--gold-soft), transparent 72%);
+}
+.hero-wordmark { font-size: clamp(30px, 6.6vw, 62px); line-height: 1.0; letter-spacing: -0.02em; }
+
+/* Варіант 3 — двострядковий wordmark із золотою лінією */
+.hero-wordmark.wm-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 18px);
+  font-family: "Bebas Neue", "Oswald", sans-serif;
+  letter-spacing: 0.06em;
+  line-height: 0.86;
+}
+.hero-wordmark.wm-stack .wm-line {
+  display: inline-block;
+  font-size: clamp(44px, 9vw, 104px);
+  color: #f4f3f0;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.hero-wordmark.wm-stack .wm-rule {
+  display: block;
+  width: clamp(84px, 22vw, 260px);
+  height: 2px;
+  border-radius: 2px;
+  transform-origin: 50% 50%;
+  background: linear-gradient(90deg, transparent 0%, var(--gold, #d8b25f) 50%, transparent 100%);
+  box-shadow: 0 0 14px 1px rgba(216, 178, 95, 0.35);
+}
+.brand-sub { font-size: 17px; margin-top: 26px; }
+
+/* [4] Дисплейна типографіка заголовків + повітря шапки секцій */
+.sec-title { font-size: clamp(33px, 6.2vw, 66px); line-height: 1.02; letter-spacing: -0.022em; }
+.contacts-card .sec-title { font-size: clamp(30px, 5.4vw, 54px); }
+.sec-head { margin-bottom: 56px; }
+.sec-head .sec-eyebrow { margin-bottom: 20px; letter-spacing: 0.34em; }
+.sec-sub { margin-top: 22px; }
+@media (max-width: 640px) { .sec-head { margin-bottom: 40px; } }
+
+/* [3] Фонові фото секцій — підняти з невидимості й потеплити */
+.pm-section-bg::before {
+  opacity: 0.20;
+  filter: grayscale(0.15) contrast(1.06) saturate(1.06);
+  -webkit-mask-image: radial-gradient(130% 92% at 50% 46%, #000 46%, transparent 88%);
+          mask-image: radial-gradient(130% 92% at 50% 46%, #000 46%, transparent 88%);
+}
+[data-theme="light"] .pm-section-bg::before { opacity: 0.13; }
+.pm-section-bg::after {
+  background:
+    linear-gradient(180deg, var(--bg) 0%, transparent 30%, transparent 72%, var(--bg) 100%),
+    radial-gradient(60% 50% at 50% 50%, var(--gold-soft), transparent 70%);
+}
+@media (max-width: 560px) { .pm-section-bg::before { opacity: 0.16; } }
+
+/* [10] Глибина карток: inset-хайлайт + тепла двошарова hover-тінь */
+.feature, .result, .price-card, .format-card, .map-card, .rule, .faq-item, .contacts-card {
+  box-shadow: inset 0 1px 0 var(--pm-card-top);
+}
+.feature:hover, .result:hover, .format-card:hover, .rule:hover {
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 6px 22px rgba(201, 163, 106, 0.14);
+}
+[data-theme="light"] .feature:hover, [data-theme="light"] .result:hover,
+[data-theme="light"] .format-card:hover, [data-theme="light"] .rule:hover {
+  box-shadow: 0 16px 38px rgba(20, 20, 26, 0.14), 0 6px 20px rgba(201, 163, 106, 0.16);
+}
+
+/* [12] Тактильність і ієрархія booking/pricing */
+.tile.selected { animation: pm-pop 0.42s var(--pm-spring); }
+@keyframes pm-pop {
+  0%   { transform: scale(0.94); }
+  55%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.tile:hover:not(:disabled):not(.booked):not(.selected):not(.unavail) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(201, 163, 106, 0.18);
+}
+.price-num { font-size: clamp(46px, 7vw, 68px); line-height: 0.95; }
+.price-cur { font-size: 18px; }
+.price-card.featured .price-note strong { color: var(--gold); font-size: 1.08em; font-weight: 800; }
+.step-title { font-size: clamp(20px, 2.6vw, 26px); letter-spacing: -0.02em; }
+.step-num { border-color: var(--gold-line); color: var(--gold-ink); font-family: 'Playfair Display', Georgia, serif; }
+
+/* [8] Готовий #submit-btn спалахує золотом (замикає «золото=дія») */
+#submit-btn:not(:disabled) {
+  background: var(--champagne);
+  color: #201804;
+  box-shadow: 0 14px 38px rgba(201, 163, 106, 0.36);
+}
+#submit-btn:not(:disabled):hover { filter: brightness(1.04); }
+
+/* [6] Постійна плаваюча золота CTA (десктоп/планшет) */
+.pm-float-cta {
+  position: fixed; right: 22px; bottom: 22px; z-index: 95;
+  display: none; align-items: center; justify-content: center;
+  padding: 15px 26px; border-radius: 14px;
+  font-weight: 700; text-decoration: none; letter-spacing: -0.01em;
+  background: var(--champagne); color: #201804;
+  box-shadow: 0 14px 38px rgba(201, 163, 106, 0.4);
+  opacity: 0; transform: translateY(14px); pointer-events: none;
+  transition: opacity 0.3s var(--pm-ease), transform 0.3s var(--pm-ease);
+}
+@media (min-width: 681px) { .pm-float-cta { display: inline-flex; } }
+.pm-float-cta.pm-visible { opacity: 1; transform: none; pointer-events: auto; }
+.pm-float-cta:hover { filter: brightness(1.05); }
+.admin-active .pm-float-cta { display: none !important; }
+
+/* [5] Стаґер появи плиток слоту (JS ставить --pm-i і клас pm-tin) */
+@keyframes pm-tile-in {
+  from { opacity: 0; transform: translateY(9px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+#day-grid .tile.pm-tin:not(.selected),
+#time-grid .tile.pm-tin:not(.selected),
+#location-grid .tile.pm-tin:not(.selected) {
+  animation: pm-tile-in 0.30s var(--pm-ease) both;
+  animation-delay: calc(var(--pm-i, 0) * 32ms);
+}
+
+/* [14] Доступність + мобільне загартування */
+.nav-links a:focus-visible, .gtile:focus-visible, .tile:focus-visible,
+.primary-btn:focus-visible, .ghost-btn:focus-visible, .icon-btn:focus-visible,
+.social-btn:focus-visible, .pm-float-cta:focus-visible {
+  outline: 2px solid var(--gold-ink); outline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .week-nav .ghost-btn.small { min-width: 44px; min-height: 40px; padding: 8px; }
+  .star-input .star { min-width: 44px; min-height: 44px; padding: 6px; }
+  body::before { animation-duration: 60s; }
+}
+@media (max-width: 560px) { [data-theme="light"] { --pm-grain: 0.02; } }
+
+/* [9] will-change для магнітних кнопок */
+.primary-btn, .hero-cta, .about-cta { will-change: transform; }
+
+/* Повага до prefers-reduced-motion для нових ефектів */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta { animation: none !important; }
+  #day-grid .tile.pm-tin, #time-grid .tile.pm-tin, #location-grid .tile.pm-tin { animation: none !important; }
+  .pm-float-cta { transition: none !important; }
+}
+
+/* ============================================================
+   PHASE 1 — третя ціна (плейсхолдер) + слот відео-відгуку
+   Аддитивно, нуль JS-ризику. Відкат: видалити цей блок + вставки в HTML.
+   ============================================================ */
+
+/* Ціни: три картки в ряд, на вузьких — стек по центру */
+.price-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+@media (max-width: 900px) {
+  .price-grid { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; }
+}
+
+/* Третя картка — АКТИВНИЙ преміум (клікабельна, золотий акцент) */
+.price-card.premium {
+  border: 1px solid var(--gold-line);
+  background-image:
+    radial-gradient(120% 80% at 50% 0%, var(--gold-soft), transparent 58%),
+    linear-gradient(180deg, var(--pm-card-top), transparent 60%);
+}
+.price-card.premium h3 { color: var(--ink); }
+.price-card.premium.pm-card-link { cursor: pointer; transition: transform 0.3s var(--pm-ease), box-shadow 0.3s var(--pm-ease), border-color 0.3s; }
+.price-card.premium.pm-card-link:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow-lg); }
+.price-card.premium .price-badge {
+  background: var(--champagne);
+  color: #201804;
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+/* ============================================================
+   ПРЕМІУМ-ПАКЕТ — опис, умови, колода тижнів, лайтбокс
+   ============================================================ */
+.pm-premium-grid {
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: start;
+  max-width: 1000px; margin: 0 auto;
+}
+@media (max-width: 840px) { .pm-premium-grid { grid-template-columns: 1fr; gap: 26px; } }
+
+.pm-perks { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; }
+@media (max-width: 520px) { .pm-perks { grid-template-columns: 1fr; gap: 16px; } }
+.pm-perk { position: relative; padding-left: 28px; }
+.pm-perk-mark {
+  position: absolute; left: 0; top: 5px; width: 12px; height: 12px;
+  transform: rotate(45deg); border-radius: 2px;
+  background: var(--champagne); box-shadow: 0 0 12px var(--gold-line);
+}
+.pm-perk h4 { font-size: 16px; margin: 0 0 4px; color: var(--ink); letter-spacing: -0.01em; }
+.pm-perk p { font-size: 14px; line-height: 1.5; color: var(--ink-soft); margin: 0; }
+
+.pm-terms {
+  position: relative; padding: 26px 24px; border-radius: var(--radius);
+  border: 1px solid var(--gold-line); background: var(--surface);
+  background-image: radial-gradient(130% 80% at 50% 0%, var(--gold-soft), transparent 60%);
+  box-shadow: var(--shadow-lg);
+}
+.pm-terms-price { text-align: center; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--pm-card-line); }
+.pm-price-big { display: block; font-family: "Bebas Neue", sans-serif; font-size: 58px; line-height: 1; letter-spacing: 1px; color: var(--ink); }
+.pm-price-big em { display: block; font-family: "Inter", sans-serif; font-style: normal; font-weight: 600; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-2); margin-top: 6px; }
+.pm-price-split { display: block; font-size: 13px; color: var(--ink-faint); margin-top: 9px; }
+.pm-terms-list { list-style: none; padding: 0; margin: 0 0 20px; }
+.pm-terms-list li { position: relative; padding: 10px 0 10px 24px; font-size: 14.5px; line-height: 1.4; color: var(--ink-soft); border-bottom: 1px solid var(--pm-card-line); }
+.pm-terms-list li:last-child { border-bottom: 0; }
+.pm-terms-list li::before { content: ""; position: absolute; left: 2px; top: 15px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.pm-terms .primary-btn { display: block; width: 100%; text-align: center; }
+
+.pm-quote { max-width: 640px; margin: 40px auto 0; text-align: center; border: 0; padding: 0; }
+.pm-quote p { font-family: "Playfair Display", serif; font-style: italic; font-size: clamp(18px, 2.6vw, 23px); line-height: 1.5; color: var(--ink); margin: 0 0 10px; }
+.pm-quote cite { font-style: normal; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-2); }
+
+.pm-weeks-head { text-align: center; margin: 48px 0 8px; }
+.pm-weeks-head .sec-title.small { font-size: clamp(22px, 3.4vw, 30px); margin-bottom: 8px; }
+
+/* --- Колода постерів --- */
+.pm-weeks { display: flex; justify-content: center; }
+.pm-deck {
+  position: relative; width: 264px; height: 372px; margin: 34px auto 54px;
+  cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent;
+}
+.pm-deck:focus-visible { outline: 2px solid var(--gold); outline-offset: 12px; border-radius: 16px; }
+.pm-week {
+  position: absolute; left: 0; top: 16px; width: 264px; height: 340px; border-radius: 14px;
+  transform: translate(calc(var(--i) * 7px), calc(var(--i) * -7px)) rotate(calc((var(--i) - 2) * 1.1deg));
+  transform-origin: center bottom; z-index: calc(20 - var(--i));
+  transition: transform 0.5s var(--pm-ease), box-shadow 0.4s var(--pm-ease);
+}
+.pm-deck:hover .pm-week,
+.pm-deck:focus-visible .pm-week {
+  transform: translate(calc(var(--i) * 13px - 18px), calc(var(--i) * -4px)) rotate(calc((var(--i) - 2) * 2.1deg));
+}
+.pm-deck-hint {
+  position: absolute; left: 0; right: 0; bottom: -34px; text-align: center;
+  font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-faint);
+}
+
+/* --- Постер (обкладинка тижня, темний, у стилі протоколу) --- */
+.pm-poster {
+  position: relative; width: 100%; height: 100%; box-sizing: border-box;
+  display: flex; flex-direction: column; padding: 22px 20px; border-radius: 14px;
+  background: #070707; color: #E5E4E2; overflow: hidden;
+  border: 1px solid rgba(229, 228, 226, 0.16);
+  box-shadow: 0 22px 52px rgba(0, 0, 0, 0.55);
+}
+.pm-poster::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(90% 55% at 50% -8%, rgba(231, 192, 137, 0.12), transparent 60%);
+}
+.pm-poster-eyebrow { font-family: "Inter", sans-serif; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: #8f8f8c; margin-bottom: 10px; }
+.pm-poster-no { font-family: "Bebas Neue", sans-serif; font-size: 42px; line-height: 0.9; letter-spacing: 1px; color: #fff; }
+.pm-poster-goal { font-family: "Barlow Condensed", sans-serif; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gold); margin: 3px 0 14px; }
+.pm-poster-days { list-style: none; padding: 0; margin: 0; flex: 1; }
+.pm-poster-days li { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; border-top: 1px solid rgba(229, 228, 226, 0.10); }
+.pm-poster-days li:first-child { border-top: 0; }
+.pm-poster-days b { font-family: "Bebas Neue", sans-serif; font-size: 15px; letter-spacing: 0.5px; color: #cfcfcc; min-width: 42px; flex: 0 0 auto; }
+.pm-poster-days span { font-family: "Barlow Condensed", sans-serif; font-size: 15px; font-weight: 300; color: #d8d7d4; line-height: 1.2; }
+.pm-poster-days .pm-rest b, .pm-poster-days .pm-rest span { color: #6a6a67; }
+.pm-poster-foot { margin-top: 12px; display: flex; justify-content: space-between; align-items: baseline; font-family: "Barlow Condensed", sans-serif; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #8f8f8c; }
+.pm-poster-foot b { font-family: "Bebas Neue", sans-serif; font-size: 18px; letter-spacing: 1px; color: var(--gold); }
+
+/* --- Лайтбокс --- */
+.pm-lb { position: fixed; inset: 0; z-index: 1200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+.pm-lb[hidden] { display: none; }
+.pm-lb-backdrop { position: absolute; inset: 0; background: rgba(4, 4, 6, 0.82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.26s var(--pm-ease); }
+.pm-lb.is-open .pm-lb-backdrop { opacity: 1; }
+.pm-lb-stage { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; opacity: 0; transform: translateY(14px) scale(0.98); transition: transform 0.3s var(--pm-ease), opacity 0.3s var(--pm-ease); }
+.pm-lb.is-open .pm-lb-stage { opacity: 1; transform: none; }
+.pm-lb-body { width: min(78vw, 340px); }
+.pm-lb-body .pm-poster.is-full { height: auto; min-height: 452px; padding: 26px 24px; }
+.pm-lb-body .pm-poster.is-full .pm-poster-no { font-size: 50px; }
+.pm-lb-body .pm-poster.is-full .pm-poster-days li { padding: 7px 0; }
+.pm-lb-nav { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 999px; cursor: pointer; display: grid; place-items: center; font-size: 28px; line-height: 1; color: #fff; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.24); transition: background 0.2s; }
+.pm-lb-nav:hover { background: rgba(255, 255, 255, 0.18); }
+.pm-lb-foot { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: center; margin-top: 20px; opacity: 0; transition: opacity 0.3s 0.05s var(--pm-ease); }
+.pm-lb.is-open .pm-lb-foot { opacity: 1; }
+.pm-lb-count { font-family: "Bebas Neue", sans-serif; letter-spacing: 1px; color: #d8d7d4; font-size: 18px; }
+@media (max-width: 480px) {
+  .pm-lb-stage { gap: 6px; }
+  .pm-lb-nav { width: 40px; height: 40px; font-size: 24px; }
+  .pm-lb-body { width: min(72vw, 320px); }
+}
+
+.pm-vreview-cap { text-align: center; margin-top: 13px; font-size: 13px; letter-spacing: 0.04em; color: var(--ink-soft); }
+
+/* Приклад плану: колода + відео Любчика поруч */
+.pm-example { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px 60px; margin-top: 6px; }
+.pm-example .pm-weeks { flex: 0 0 auto; }
+.pm-example .pm-vreview { flex: 0 0 auto; margin: 0; width: 300px; max-width: 82vw; }
+@media (max-width: 760px) { .pm-example { gap: 34px; } .pm-example .pm-vreview { width: 264px; } }
+
+/* Преміум CTA — обговорення в Instagram / Telegram */
+.pm-terms-note { margin: 0 0 14px; text-align: center; font-size: 13px; line-height: 1.45; color: var(--ink-soft); }
+.pm-terms-cta { display: flex; flex-direction: column; gap: 10px; }
+.pm-terms-cta .primary-btn,
+.pm-terms-cta .ghost-btn { display: block; width: 100%; text-align: center; }
+
+/* Відео-відгук — вертикальна рамка 9:16 */
+.pm-vreview { max-width: 340px; margin: 0 auto; }
+.pm-vreview-frame {
+  position: relative; aspect-ratio: 9 / 16; overflow: hidden;
+  border-radius: var(--radius); border: 1px solid var(--pm-card-line);
+  background:
+    radial-gradient(70% 60% at 50% 40%, var(--gold-soft), transparent 70%),
+    linear-gradient(180deg, var(--surface-2), var(--surface));
+  box-shadow: var(--shadow-lg);
+}
+.pm-vreview-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; background: transparent;
+}
+.pm-vreview-play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 66px; height: 66px; border-radius: 999px; cursor: pointer;
+  display: grid; place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: var(--champagne); color: #201804;
+  box-shadow: 0 14px 38px rgba(201, 163, 106, 0.4);
+  transition: transform 0.2s var(--pm-ease), filter 0.2s var(--pm-ease);
+}
+.pm-vreview-play svg { width: 26px; height: 26px; margin-left: 3px; }
+.pm-vreview-play:hover { filter: brightness(1.05); transform: translate(-50%, -50%) scale(1.06); }
+.pm-vreview-soon {
+  position: absolute; left: 0; right: 0; bottom: 16px; text-align: center;
+  font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft);
+}
+.pm-vreview.is-playing .pm-vreview-play,
+.pm-vreview.is-playing .pm-vreview-soon { opacity: 0; pointer-events: none; }
+
+/* ============================================================
+   PHASE 3 — Ambient-галерея (відео тихо грає, лише видиме)
+   Не чіпає контракт .gtile[data-video] + #video-lightbox.
+   ============================================================ */
+.pm-gtile-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; pointer-events: none;
+  opacity: 0; transition: opacity 0.6s var(--pm-ease);
+}
+.gtile.pm-playing .pm-gtile-video { opacity: 1; }
+.gplay { transition: transform 0.18s var(--ease), background 0.2s var(--ease), opacity 0.3s var(--ease); }
+.gtile.pm-playing .gplay { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .pm-gtile-video { display: none !important; } }
+
+/* ============================================================
+   3D-ДЕТАЛІ — преміум tilt на курсор (JS ставить transform).
+   Легко, надійно, без бібліотек. reduced-motion / touch — вимк.
+   ============================================================ */
+.feature, .result, .price-card, .format-card, .rule, .gtile {
+  transform-style: preserve-3d;
+}
+.feature-grid, .result-grid, .price-grid, .format-grid, .rules-list, .gallery-grid {
+  perspective: 1100px;
+}
+/* глибина під нахилом */
+.feature, .result, .price-card, .format-card, .rule {
+  transition: transform 0.28s var(--pm-ease), box-shadow 0.34s var(--pm-ease), border-color 0.34s var(--pm-ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .feature, .result, .price-card, .format-card, .rule, .gtile { transform: none !important; }
+}
+
+/* GSAP scroll-cinema — слова wordmark (для інтро «збирання») */
+.hero-wordmark .pm-word { display: inline-block; will-change: transform, opacity, filter; }
+.hero-wordmark em.pm-word { font-style: italic; }
+
+/* ============================================================
+   3D-АТМОСФЕРА ЗБОКУ HERO — золоті іскри/жар + світлові промені.
+   Hero-відео = центральна портрет-колона; по боках — жива 3D-сцена.
+   (AI-фон Higgsfield можна вмонтувати пізніше замість цього.)
+   ============================================================ */
+.hero-media { perspective: 720px; }
+.hero-media .hero-video {
+  left: 50%; top: 50%; right: auto; bottom: auto;
+  width: auto; height: 100%; max-width: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover; z-index: 2; border-radius: 4px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+}
+.pm-hero-fx {
+  position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none;
+  transform-style: preserve-3d;
+  background:
+    radial-gradient(70% 55% at 50% 24%, rgba(231, 192, 137, 0.10), transparent 60%),
+    radial-gradient(120% 90% at 50% 120%, rgba(150, 116, 74, 0.13), transparent 70%),
+    #0a0b0f;
+}
+/* Боки = маленькі квадрати відео в темряві, на які зверху падає промінь світла */
+.pm-hero-side {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: clamp(300px, 30vw, 440px); aspect-ratio: 3 / 4; z-index: 6;
+  pointer-events: none;
+}
+.pm-hero-side.left { left: 2.5%; }
+.pm-hero-side.right { right: 2.5%; }
+/* Відео-«портал»: краї розчиняються в темряву (не тупий прямокутник) */
+.pm-hero-side video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: block; border-radius: 20px;
+  filter: brightness(1.14) contrast(1.05);
+  -webkit-mask-image: radial-gradient(125% 120% at 50% 42%, #000 52%, transparent 92%);
+          mask-image: radial-gradient(125% 120% at 50% 42%, #000 52%, transparent 92%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+/* ПРЕМІУМ-КОМПОЗИТ: фото-ліхтар + сноп + калюжа + пил через screen-blend (чорне=прозоре) */
+.pm-hero-side::before, .pm-hero-side::after { display: none; }
+.pm-hero-side img { position: absolute; pointer-events: none; }
+.pm-hero-beam {
+  left: 50%; top: -40%; transform: translateX(-50%);
+  width: 92%; height: 138%; object-fit: contain;
+  mix-blend-mode: screen; z-index: 2; opacity: 0.8;
+  animation: pm-breathe 11s ease-in-out infinite;
+}
+.pm-hero-pool {
+  left: 50%; bottom: -4%; transform: translateX(-50%);
+  width: 120%; height: 72%; object-fit: contain;
+  mix-blend-mode: screen; z-index: 2; opacity: 0.85;
+  animation: pm-breathe 11s ease-in-out infinite;
+}
+.pm-hero-dust {
+  inset: -22% 0 auto 0; width: 100%; height: 132%; object-fit: cover;
+  mix-blend-mode: screen; z-index: 2; opacity: 0.5;
+  animation: pm-dust 26s linear infinite alternate;
+}
+.pm-lantern {
+  left: 50%; top: -54%; transform: translateX(-50%);
+  width: clamp(210px, 25vw, 330px); height: auto; z-index: 4;
+  mix-blend-mode: screen;
+  animation: pm-flicker 7s steps(1) infinite;
+}
+.pm-hero-side.right .pm-lantern { transform: translateX(-50%) scaleX(-1); }
+@keyframes pm-breathe { 0%, 100% { opacity: 0.76; } 50% { opacity: 1; } }
+@keyframes pm-flicker { 0%, 93%, 100% { filter: brightness(1); } 94% { filter: brightness(0.55); } 95% { filter: brightness(1); } 97% { filter: brightness(0.8); } 98% { filter: brightness(1); } }
+@keyframes pm-dust { from { transform: translateY(0); } to { transform: translateY(-5%); } }
+@media (prefers-reduced-motion: reduce) {
+  .pm-hero-beam, .pm-hero-pool, .pm-hero-dust, .pm-lantern { animation: none !important; }
+}
+@media (max-width: 760px) { .pm-hero-side { display: none; } }
+
+.pm-fx-glow { position: absolute; border-radius: 50%; filter: blur(70px); mix-blend-mode: screen; will-change: transform; }
+.pm-fx-glow.g1 { width: 46vw; height: 46vw; left: -8vw; top: 6%;   background: radial-gradient(circle, rgba(231, 192, 137, 0.28), transparent 68%); animation: pm-fx-d1 16s ease-in-out infinite alternate; }
+.pm-fx-glow.g2 { width: 42vw; height: 42vw; right: -6vw; bottom: 2%; background: radial-gradient(circle, rgba(150, 120, 90, 0.24), transparent 68%); animation: pm-fx-d2 21s ease-in-out infinite alternate; }
+.pm-ember {
+  position: absolute; bottom: -5%; border-radius: 50%;
+  background: radial-gradient(circle, #f9edd2, #e7c089 45%, rgba(201, 163, 106, 0) 72%);
+  box-shadow: 0 0 7px rgba(231, 192, 137, 0.7);
+  will-change: transform, opacity;
+  animation-name: pm-ember-rise; animation-timing-function: linear; animation-iteration-count: infinite;
+}
+@keyframes pm-ember-rise {
+  0%   { transform: translate3d(0, 0, var(--pm-z, 0px)); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translate3d(24px, -118vh, var(--pm-z, 0px)); opacity: 0; }
+}
+@keyframes pm-fx-d1 { to { transform: translate(6%, -5%); } }
+@keyframes pm-fx-d2 { to { transform: translate(-5%, 4%); } }
+@media (prefers-reduced-motion: reduce) {
+  .pm-ember, .pm-fx-glow { animation: none !important; }
+}
+
+/* ===== Hero sticker-wall (Nike-стайл; бокс-іконки, без реальних людей) ===== */
+.pm-sticker {
+  position: absolute; z-index: 1; will-change: transform;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.55));
+  animation: pm-stick-float var(--pm-fdur, 7s) ease-in-out infinite alternate;
+}
+.pm-sticker > * { display: block; }
+.pm-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'Inter', system-ui, sans-serif; font-weight: 800;
+  letter-spacing: 0.07em; text-transform: uppercase; white-space: nowrap;
+  padding: 7px 13px; border-radius: 9px; font-size: 14px; line-height: 1;
+  border: 1.5px solid;
+}
+.pm-chip.gold { background: var(--champagne); color: #201804; border-color: rgba(255, 255, 255, 0.55); }
+.pm-chip.dark { background: #14141a; color: var(--gold); border-color: var(--gold-line); }
+.pm-chip.out  { background: rgba(10, 10, 14, 0.35); color: #f2f2ef; border-color: rgba(242, 242, 239, 0.85); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+.pm-stamp {
+  width: 76px; height: 76px; border-radius: 50%;
+  display: grid; place-items: center; text-align: center;
+  font-family: 'Inter', system-ui, sans-serif; font-weight: 900;
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #201804; background: var(--champagne);
+  border: 2px solid rgba(255, 255, 255, 0.5); line-height: 1.1;
+}
+.pm-stamp b { font-size: 16px; }
+.pm-ico { width: var(--pm-isz, 46px); height: var(--pm-isz, 46px); color: var(--gold); }
+.pm-ico.white { color: #f2f2ef; }
+.pm-photo {
+  width: var(--pm-psz, 88px); height: var(--pm-psz, 88px);
+  object-fit: cover; border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(231, 192, 137, 0.4);
+}
+.pm-photo.round { border-radius: 50%; }
+/* Наклейки клієнта (PNG, бажано прозорі) — без рамки, лише глибина */
+.pm-decal { width: var(--pm-psz, 104px); height: auto; max-height: calc(var(--pm-psz, 104px) * 1.25); object-fit: contain; }
+/* Кругле фото-медальйон із папки «Я» — золоте кільце */
+.pm-photo-badge {
+  width: var(--pm-psz, 90px); height: var(--pm-psz, 90px);
+  object-fit: cover; border-radius: 50%;
+  border: 3px solid var(--gold);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.45), inset 0 0 14px rgba(0, 0, 0, 0.35);
+}
+
+/* Шар фізики наклейок — над героєм, 3D-перспектива; drag/fly керує JS */
+.pm-sticker-layer {
+  position: absolute; inset: 0; z-index: 40; overflow: hidden;
+  pointer-events: none; perspective: 1000px;
+}
+.pm-phys {
+  position: absolute; top: 0; left: 0; pointer-events: auto;
+  animation: none !important; will-change: transform; user-select: none;
+  -webkit-user-select: none;
+}
+.pm-phys .pm-stamp { box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5); }
+/* Відео-«рибки» — кругле відео в золотому кільці */
+.pm-fish video {
+  width: var(--pm-psz, 120px); height: var(--pm-psz, 120px);
+  object-fit: cover; border-radius: 50%; display: block;
+  border: 3px solid var(--gold);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.45), inset 0 0 16px rgba(0, 0, 0, 0.4);
+}
+@media (max-width: 760px) { .pm-sticker-layer { display: none; } }
+@keyframes pm-stick-float {
+  from { transform: translateY(0) rotate(var(--pm-rot, 0deg)); }
+  to   { transform: translateY(-9px) rotate(var(--pm-rot, 0deg)); }
+}
+@media (prefers-reduced-motion: reduce) { .pm-sticker { animation: none !important; } }
+@media (max-width: 760px) { .pm-sticker { display: none; } }
+
+/* ===== «Про тренера» — колаж із 3 фото ====================== */
+.pm-about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start;
+}
+.pm-about-grid img {
+  width: 100%; object-fit: cover; display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--pm-card-line);
+  box-shadow: var(--shadow-md);
+}
+.pm-about-grid .pm-ab-a { grid-column: 1 / -1; aspect-ratio: 5 / 4; }
+.pm-about-grid .pm-ab-b, .pm-about-grid .pm-ab-c { aspect-ratio: 3 / 4; }
+@media (max-width: 640px) {
+  .pm-about-grid .pm-ab-a { aspect-ratio: 4 / 3; }
+}
+
+/* ===== Дизайн-фон секцій — чистий градієнт+глоу (без «друкованих» іконок) ===== */
+.pm-section-bg::before { background: none !important; }
+.pm-section-bg::after {
+  background:
+    radial-gradient(58% 55% at 50% 40%, var(--gold-soft), transparent 70%),
+    linear-gradient(180deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%) !important;
+}

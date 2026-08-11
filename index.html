@@ -6,8 +6,9 @@
   <title>Запис на тренування — Бокс / Кікбоксинг</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="premium.css?v=4" />
   <script>
     // Set theme before paint to avoid flash. Default: dark.
     (function () {
@@ -20,11 +21,8 @@
   <header class="site-header">
     <div class="hero-media" aria-hidden="true">
       <video class="hero-video is-active" autoplay muted loop playsinline webkit-playsinline preload="auto"
-             poster="assets/hero-poster.jpg">
-        <source src="assets/hero.mp4" type="video/mp4" />
-      </video>
-      <video class="hero-video" muted loop playsinline webkit-playsinline preload="none">
-        <source src="assets/hero2.mp4" type="video/mp4" />
+             poster="assets/hero-promo.jpg">
+        <source src="assets/hero-promo.mp4?v=4" type="video/mp4" />
       </video>
     </div>
     <div class="hero-video-veil" aria-hidden="true"></div>
@@ -48,7 +46,7 @@
       <div class="hero-center">
         <span class="brand-tag">Персональні тренування · Львів</span>
         <img class="hero-logo" src="assets/logo.png" width="600" height="600" alt="ARTUR Performance Club" />
-        <h1 class="hero-wordmark">Boxing <em>&amp;</em> Kickboxing</h1>
+        <h1 class="hero-wordmark wm-stack"><span class="wm-line">Boxing</span><span class="wm-rule" aria-hidden="true"></span><span class="wm-line">Kickboxing</span></h1>
         <p class="brand-sub">Персональні тренування 1-на-1 з боксу та кікбоксингу. Обери локацію, день і час — запис займе 30 секунд.</p>
         <a href="#booking-start" class="primary-btn hero-cta">Записатись на тренування</a>
         <div class="hero-stats">
@@ -144,8 +142,10 @@
       <!-- ===== ABOUT TRAINER ===== -->
       <section class="sec" id="about">
         <div class="about-wrap">
-          <div class="about-media">
-            <img src="assets/Foto.jpg" alt="Артур — тренер з боксу та кікбоксингу" loading="lazy" />
+          <div class="about-media pm-about-grid">
+            <img class="pm-ab-a" src="assets/Foto.jpg" alt="Артур — тренер з боксу та кікбоксингу" loading="lazy" />
+            <img class="pm-ab-b" src="assets/about/trainer-2.jpg?v=4" alt="Артур на тренуванні з лапами" loading="lazy" />
+            <img class="pm-ab-c" src="assets/about/trainer-3.jpg?v=4" alt="Команда на тренуванні просто неба" loading="lazy" />
           </div>
           <div class="about-body">
             <span class="sec-eyebrow">Про тренера</span>
@@ -172,14 +172,15 @@
           <p class="sec-sub muted">Натисни на відео, щоб подивитись.</p>
         </div>
         <div class="gallery-grid">
-          <button class="gtile" type="button" data-video="assets/gallery/gal1-ring.mp4" style="background-image:url('assets/gallery/gal1-ring.jpg')" aria-label="Дивитись відео — робота в рингу"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/gal5-pads.mp4" style="background-image:url('assets/gallery/gal5-pads.jpg')" aria-label="Дивитись відео — робота на лапах"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/gal2-bag.mp4" style="background-image:url('assets/gallery/gal2-bag.jpg')" aria-label="Дивитись відео — удар по мішку"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/gal6-her.mp4" style="background-image:url('assets/gallery/gal6-her.jpg')" aria-label="Дивитись відео — тренування клієнтки"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/gal3-night.mp4" style="background-image:url('assets/gallery/gal3-night.jpg')" aria-label="Дивитись відео — вечірнє тренування"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/gal7-spar.mp4" style="background-image:url('assets/gallery/gal7-spar.jpg')" aria-label="Дивитись відео — спаринг на майданчику"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/gal4-outdoor.mp4" style="background-image:url('assets/gallery/gal4-outdoor.jpg')" aria-label="Дивитись відео — тренування на вулиці"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
-          <button class="gtile" type="button" data-video="assets/gallery/gal8-mitts.mp4" style="background-image:url('assets/gallery/gal8-mitts.jpg')" aria-label="Дивитись відео — лапи на майданчику"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g1.mp4?v=4" style="background-image:url('assets/reels/g1.jpg?v=4')" aria-label="Дивитись відео — бокс на лапах у залі"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g2.mp4?v=4" style="background-image:url('assets/reels/g2.jpg?v=4')" aria-label="Дивитись відео — робота на мішку"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g3.mp4?v=4" style="background-image:url('assets/reels/g3.jpg?v=4')" aria-label="Дивитись відео — функціональна робота"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g4.mp4?v=4" style="background-image:url('assets/reels/g4.jpg?v=4')" aria-label="Дивитись відео — удар ногою, муай-тай"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g5.mp4?v=4" style="background-image:url('assets/reels/g5.jpg?v=4')" aria-label="Дивитись відео — тренування на майданчику"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g6.mp4?v=4" style="background-image:url('assets/reels/g6.jpg?v=4')" aria-label="Дивитись відео — лапи в залі"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g7.mp4?v=4" style="background-image:url('assets/reels/g7.jpg?v=4')" aria-label="Дивитись відео — лапи на майданчику"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g8.mp4?v=4" style="background-image:url('assets/reels/g8.jpg?v=4')" aria-label="Дивитись відео — спаринг у залі"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button class="gtile" type="button" data-video="assets/reels/g9.mp4?v=4" style="background-image:url('assets/reels/g9.jpg?v=4')" aria-label="Дивитись відео — робота в парах"><span class="gplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></button>
         </div>
       </section>
 
@@ -245,6 +246,78 @@
             <p class="price-note">За двох — лише <strong>600 грн</strong> з особи</p>
             <a href="#booking-start" class="primary-btn small">Записатись</a>
           </article>
+          <article class="price-card premium pm-card-link" data-target="premium">
+            <span class="price-badge">Максимум</span>
+            <h3>Місячний преміум</h3>
+            <div class="price"><span class="price-num">9600</span><span class="price-cur">грн</span></div>
+            <p class="price-note">Місяць · 3 тренування/тиждень · індивідуальний план під тебе</p>
+            <a href="#premium" class="primary-btn small">Детальніше про пакет</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== PREMIUM PACKAGE ===== -->
+      <section class="sec" id="premium">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Місячний преміум</span>
+          <h2 class="sec-title">Пакет <em>«Преміум»</em></h2>
+          <p class="sec-sub muted">Максимальний результат: індивідуальна програма, 3 тренування на тиждень і щотижневе коригування під тебе.</p>
+        </div>
+
+        <div class="pm-premium-grid">
+          <div class="pm-perks">
+            <div class="pm-perk"><span class="pm-perk-mark"></span><h4>Індивідуальний план</h4><p>Складаю програму особисто під тебе — цілі, рівень, графік.</p></div>
+            <div class="pm-perk"><span class="pm-perk-mark"></span><h4>3 тренування / тиждень</h4><p>Стабільний обсяг 1-на-1, повна увага й темп тренера.</p></div>
+            <div class="pm-perk"><span class="pm-perk-mark"></span><h4>Техніка + фізика</h4><p>Бокс, кік, сила й кардіо — усе в одній системі.</p></div>
+            <div class="pm-perk"><span class="pm-perk-mark"></span><h4>Харчування та відновлення</h4><p>Поради по їжі під твою ціль і грамотний відпочинок між тренуваннями.</p></div>
+            <div class="pm-perk"><span class="pm-perk-mark"></span><h4>Щотижневий протокол</h4><p>Письмовий план на кожен тиждень + коригування під твій прогрес — як у Любчика нижче.</p></div>
+            <div class="pm-perk"><span class="pm-perk-mark"></span><h4>Контроль прогресу</h4><p>Бачиш свою динаміку від тижня до тижня — результат передбачуваний.</p></div>
+          </div>
+
+          <aside class="pm-terms">
+            <div class="pm-terms-price">
+              <span class="pm-price-big">9600<em>грн / місяць</em></span>
+              <span class="pm-price-split">2400 грн/тиждень · 3 тренування · 4 тижні</span>
+            </div>
+            <ul class="pm-terms-list">
+              <li>Передоплата за тренування наперед</li>
+              <li>3 тренування на тиждень, 1-на-1</li>
+              <li>Мінімум 1 місяць занять</li>
+              <li>Можна одразу оплатити місяць — і я складаю індивідуальний план під тебе</li>
+            </ul>
+            <p class="pm-terms-note">Преміум обговорюємо особисто — напиши, підберемо графік і складу план під тебе.</p>
+            <div class="pm-terms-cta">
+              <a class="primary-btn" href="https://instagram.com/0.0.0.9.9.9" target="_blank" rel="noopener">Написати в Instagram</a>
+              <a class="ghost-btn" href="https://t.me/A_0_0_0_9" target="_blank" rel="noopener">Написати в Telegram</a>
+            </div>
+          </aside>
+        </div>
+
+        <blockquote class="pm-quote">
+          <p>«За 6 тижнів підтягнув техніку, дихалку й форму. Щотижня новий план — завжди є прогрес і жодної рутини.»</p>
+          <cite>Любчик · клієнт місячного преміуму</cite>
+        </blockquote>
+
+        <div class="pm-weeks-head">
+          <h3 class="sec-title small">Приклад плану — <em>6 тижнів Любчика</em></h3>
+          <p class="sec-sub muted">Реальна програма, яку я складав щотижня. Натисни на колоду — гортай усі тижні.</p>
+        </div>
+        <div class="pm-example">
+          <div id="premium-weeks" class="pm-weeks">
+            <noscript>
+              <a class="primary-btn small" href="https://client-protocols-alpha.vercel.app/" target="_blank" rel="noopener">Дивитись план Любчика</a>
+            </noscript>
+          </div>
+          <figure class="pm-vreview">
+            <div class="pm-vreview-frame">
+              <video class="pm-vreview-video" playsinline webkit-playsinline preload="none"
+                     controls poster="assets/review/story-poster.jpg" data-src="assets/review/story.mp4"></video>
+              <button class="pm-vreview-play" type="button" aria-label="Відтворити відео-відгук Любчика">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <figcaption class="pm-vreview-cap">Відео-відгук Любчика · 6 тижнів у програмі</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -723,5 +796,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
+  <!-- GSAP (локально, self-contained; для scroll-cinema. Прибрати ці 2 рядки — сайт падає на rAF/IO-шар) -->
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <!-- Premium motion layer (progressive enhancement; не чіпає запис/адмінку) -->
+  <script src="premium.js?v=5"></script>
 </body>
 </html>
