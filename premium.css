@@ -409,7 +409,7 @@ body::after {
 }
 .hero-wordmark.wm-stack .wm-line {
   display: inline-block;
-  font-size: clamp(44px, 9vw, 104px);
+  font-size: clamp(36px, 6.6vw, 78px);
   color: #f4f3f0;
   font-weight: 400;
   text-transform: uppercase;
@@ -432,7 +432,7 @@ body::after {
   .hero-logo { width: min(172px, 44vw); margin-bottom: 10px; }
   .brand-tag { margin-bottom: 16px; }
   .hero-wordmark.wm-stack { gap: 7px; }
-  .hero-wordmark.wm-stack .wm-line { font-size: clamp(38px, 11vw, 58px); }
+  .hero-wordmark.wm-stack .wm-line { font-size: clamp(32px, 9vw, 50px); }
   .hero-wordmark.wm-stack .wm-rule { width: clamp(64px, 30vw, 150px); }
   .brand-sub { font-size: 15px; margin-top: 16px; }
 }
