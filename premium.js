@@ -1,5 +1,5 @@
 /* ============================================================
-   PREMIUM LAYER (motion) — ARTUR Performance Club
+   PREMIUM LAYER (motion) — Performance Club
    Progressive enhancement. НЕ чіпає Firebase-запис і адмінку.
    Якщо цей файл не завантажиться — сайт лишається видимим і робочим.
    Легко відкотити: прибрати <script src="premium.js"> з index.html.
@@ -631,7 +631,7 @@
     }).join("");
     return (
       '<div class="pm-poster' + (full ? " is-full" : "") + '">' +
-        '<span class="pm-poster-eyebrow">Artur Performance Club</span>' +
+        '<span class="pm-poster-eyebrow">Performance Club</span>' +
         '<span class="pm-poster-no">Тиждень ' + w.n + '</span>' +
         '<span class="pm-poster-goal">' + pmEsc(w.goal) + '</span>' +
         '<ul class="pm-poster-days">' + rows + '</ul>' +
