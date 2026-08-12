@@ -429,7 +429,7 @@ body::after {
 @media (max-width: 560px) {
   .site-header { padding-top: 42px; }
   .hero-center { padding: 26px 0 32px; }
-  .hero-logo { width: min(220px, 54vw); margin-bottom: 12px; }
+  .hero-logo { width: min(172px, 44vw); margin-bottom: 10px; }
   .brand-tag { margin-bottom: 16px; }
   .hero-wordmark.wm-stack { gap: 7px; }
   .hero-wordmark.wm-stack .wm-line { font-size: clamp(38px, 11vw, 58px); }
