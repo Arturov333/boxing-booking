@@ -1165,6 +1165,16 @@ if (themeToggle) {
 // BOOTSTRAP
 // ============================================================
 
+// Якщо весь поточний тиждень (Пн–Сб) уже минув (напр. у неділю) —
+// стартувати з наступного тижня, щоб не показувати «мертвий» тиждень із самими сірими днями.
+(function () {
+  var sat = addDays(startOfWeek(new Date()), 5);
+  sat.setHours(23, 59, 59, 999);
+  if (sat.getTime() < Date.now() && state.weekOffset === 0) {
+    state.weekOffset = 1;
+  }
+})();
+
 renderLocations();
 renderDays();
 renderTimes();
