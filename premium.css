@@ -700,6 +700,21 @@ body::after {
 .pm-terms-cta .primary-btn,
 .pm-terms-cta .ghost-btn { display: block; width: 100%; text-align: center; }
 
+/* Таймер — секція-продукт */
+.pm-timer { max-width: 700px; margin: 0 auto; }
+.pm-timer-feats { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 13px; }
+.pm-timer-feats li { position: relative; padding-left: 30px; font-size: 15.5px; line-height: 1.5; color: var(--ink-soft); }
+.pm-timer-feats li strong { color: var(--ink); font-weight: 600; }
+.pm-timer-feats li::before {
+  content: ""; position: absolute; left: 4px; top: 7px; width: 11px; height: 11px;
+  transform: rotate(45deg); border-radius: 2px; background: var(--champagne); box-shadow: 0 0 10px var(--gold-line);
+}
+.pm-timer-cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+@media (max-width: 480px) {
+  .pm-timer-cta { flex-direction: column; }
+  .pm-timer-cta .primary-btn, .pm-timer-cta .ghost-btn { width: 100%; text-align: center; }
+}
+
 /* Відео-відгук — вертикальна рамка 9:16 */
 .pm-vreview { max-width: 340px; margin: 0 auto; }
 .pm-vreview-frame {
