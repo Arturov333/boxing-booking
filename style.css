@@ -663,6 +663,16 @@ body::before {
   letter-spacing: 0.1em; text-transform: uppercase; color: #B07A12; margin-top: 5px;
 }
 .tile:disabled { cursor: not-allowed; opacity: 0.45; }
+/* Дні, коли тренер не працює на обраній локації — перекреслено + підпис */
+.tile.day-off {
+  color: var(--ink-faint); background: var(--surface-2); opacity: 0.9;
+  text-decoration: line-through; text-decoration-color: var(--danger); text-decoration-thickness: 2px;
+}
+.tile.day-off .tile-sub { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--danger); }
+.tile.day-off::after {
+  content: 'Інша локація'; display: block; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); margin-top: 5px; text-decoration: none;
+}
 .tile .tile-sub { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); margin-top: 5px; }
 
 /* Booking summary — note shown when the chosen slot is a request (yellow). */

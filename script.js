@@ -343,9 +343,10 @@ function renderDays() {
     // Disable past whole days
     const endOfDay = new Date(date); endOfDay.setHours(23, 59, 59, 999);
     if (endOfDay.getTime() < Date.now()) b.disabled = true;
-    // Disable days the selected location does not work
+    // Days the selected location does not work — показуємо перекресленими
     if (state.selectedLocation && !isDayAllowed(state.selectedLocation, iso)) {
       b.disabled = true;
+      b.classList.add("day-off");
     }
     b.innerHTML = `${DAYS_UA[i]}<span class="tile-sub">${fmtDateShort(date)}</span>`;
     b.addEventListener("click", () => {
