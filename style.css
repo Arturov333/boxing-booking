@@ -666,9 +666,9 @@ body::before {
 /* Дні, коли тренер не працює на обраній локації — перекреслено + підпис */
 .tile.day-off {
   color: var(--ink-faint); background: var(--surface-2); opacity: 0.9;
-  text-decoration: line-through; text-decoration-color: var(--danger); text-decoration-thickness: 2px;
+  text-decoration: line-through; text-decoration-color: var(--accent); text-decoration-thickness: 2px;
 }
-.tile.day-off .tile-sub { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--danger); }
+.tile.day-off .tile-sub { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--accent); }
 .tile.day-off::after {
   content: 'Інша локація'; display: block; font-size: 9px; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); margin-top: 5px; text-decoration: none;
