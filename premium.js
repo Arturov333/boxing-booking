@@ -622,7 +622,9 @@
     { n: 7, goal: "Парна робота", split: "ПН · СР · ПТ", days: [
       ["ПН", "Hyrox / Силовий"], ["СР", "Кікбоксинг парна робота"], ["ПТ", "Бокс"], ["СБ/НД", "Відпочинок", 2] ] },
     { n: 8, goal: "Закріплення", split: "ПН · СР · ПТ", days: [
-      ["ПН", "Hyrox / Силовий"], ["СР", "Кікбоксинг — закріплення + уклон"], ["ПТ", "Бокс"], ["СБ/НД", "Відпочинок", 2] ] }
+      ["ПН", "Hyrox / Силовий"], ["СР", "Кікбоксинг — закріплення + уклон"], ["ПТ", "Бокс"], ["СБ/НД", "Відпочинок", 2] ] },
+    { n: 9, goal: "Вертушка", split: "ПН · СР · ПТ", days: [
+      ["ПН", "Hyrox / Силовий"], ["СР", "Кікбоксинг — вертушка (spinning back kick)"], ["ПТ", "Бокс"], ["СБ/НД", "Відпочинок", 2] ] }
   ];
   var PM_WEEK_URL = "https://client-protocols-alpha.vercel.app/clients/lyubchyk/week-";
 
@@ -664,7 +666,7 @@
     pile.className = "pm-deck";
     pile.setAttribute("role", "button");
     pile.setAttribute("tabindex", "0");
-    pile.setAttribute("aria-label", "Приклад плану Любчика — 8 тижнів, відкрити");
+    pile.setAttribute("aria-label", "Приклад плану Любчика — 9 тижнів, відкрити");
     PM_WEEKS.forEach(function (w, i) {
       var card = document.createElement("article");
       card.className = "pm-week";
@@ -675,7 +677,7 @@
     });
     var hint = document.createElement("span");
     hint.className = "pm-deck-hint";
-    hint.textContent = "8 тижнів · натисни, щоб гортати";
+    hint.textContent = "9 тижнів · натисни, щоб гортати";
     pile.appendChild(hint);
     mount.insertBefore(pile, mount.firstChild);
 
