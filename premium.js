@@ -583,21 +583,21 @@
 
   /* --- Відео-відгук: клік по плей → підвантажити й програти --- */
   function setupVideoReview() {
-    var fig = document.querySelector(".pm-vreview");
-    if (!fig) return;
-    var video = fig.querySelector(".pm-vreview-video");
-    var btn = fig.querySelector(".pm-vreview-play");
-    if (!video || !btn) return;
-    btn.addEventListener("click", function () {
-      var src = video.getAttribute("data-src");
-      if (src && !video.getAttribute("src")) video.setAttribute("src", src);
-      fig.classList.add("is-playing");
-      var p = video.play();
-      if (p && p.catch) p.catch(function () {});
-    });
-    video.addEventListener("play", function () { fig.classList.add("is-playing"); });
-    video.addEventListener("pause", function () {
-      if (!video.ended) fig.classList.remove("is-playing");
+    Array.prototype.forEach.call(document.querySelectorAll(".pm-vreview"), function (fig) {
+      var video = fig.querySelector(".pm-vreview-video");
+      var btn = fig.querySelector(".pm-vreview-play");
+      if (!video || !btn) return;
+      btn.addEventListener("click", function () {
+        var src = video.getAttribute("data-src");
+        if (src && !video.getAttribute("src")) video.setAttribute("src", src);
+        fig.classList.add("is-playing");
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+      });
+      video.addEventListener("play", function () { fig.classList.add("is-playing"); });
+      video.addEventListener("pause", function () {
+        if (!video.ended) fig.classList.remove("is-playing");
+      });
     });
   }
 

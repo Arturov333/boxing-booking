@@ -615,6 +615,16 @@ body::after {
 .pm-quote p { font-family: "Playfair Display", serif; font-style: italic; font-size: clamp(18px, 2.6vw, 23px); line-height: 1.5; color: var(--ink); margin: 0 0 10px; }
 .pm-quote cite { font-style: normal; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-2); }
 
+/* Сторіс клієнта поруч із його відгуком */
+.pm-quote-row { display: flex; align-items: center; justify-content: center; gap: 36px; max-width: 780px; margin: 40px auto 0; flex-wrap: wrap; }
+.pm-quote-row .pm-quote { margin: 0; text-align: left; max-width: 400px; }
+.pm-story { width: 208px; max-width: 62vw; margin: 0; flex: 0 0 auto; }
+.pm-story .pm-vreview-cap { margin-top: 10px; }
+@media (max-width: 620px) {
+  .pm-quote-row { gap: 20px; }
+  .pm-quote-row .pm-quote { text-align: center; }
+}
+
 .pm-weeks-head { text-align: center; margin: 48px 0 8px; }
 .pm-weeks-head .sec-title.small { font-size: clamp(22px, 3.4vw, 30px); margin-bottom: 8px; }
 
