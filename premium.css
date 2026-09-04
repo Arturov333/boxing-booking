@@ -667,11 +667,15 @@ body::after {
 /* --- Лайтбокс --- */
 .pm-lb { position: fixed; inset: 0; z-index: 1200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
 .pm-lb[hidden] { display: none; }
-.pm-lb-backdrop { position: absolute; inset: 0; background: rgba(4, 4, 6, 0.82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.26s var(--pm-ease); }
-.pm-lb.is-open .pm-lb-backdrop { opacity: 1; }
+/* §12 «Матеріалізація»: скло прибуває — blur росте разом з opacity */
+.pm-lb-backdrop { position: absolute; inset: 0; background: rgba(4, 4, 6, 0.82); -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px); opacity: 0; transition: opacity 0.28s var(--pm-ease), -webkit-backdrop-filter 0.28s var(--pm-ease), backdrop-filter 0.28s var(--pm-ease); }
+.pm-lb.is-open .pm-lb-backdrop { opacity: 1; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .pm-lb-stage { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; opacity: 0; transform: translateY(14px) scale(0.98); transition: transform 0.3s var(--pm-ease), opacity 0.3s var(--pm-ease); }
 .pm-lb.is-open .pm-lb-stage { opacity: 1; transform: none; }
-.pm-lb-body { width: min(78vw, 340px); }
+/* §2/3 свайп: тягнемо постер 1:1, вертикаль лишається для скролу */
+.pm-lb-body { width: min(78vw, 340px); overflow: hidden; touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none; }
+.pm-lb-body:active { cursor: grabbing; }
+.pm-lb-body .pm-poster.is-full { will-change: transform; }
 .pm-lb-body .pm-poster.is-full { height: auto; min-height: 452px; padding: 26px 24px; }
 .pm-lb-body .pm-poster.is-full .pm-poster-no { font-size: 50px; }
 .pm-lb-body .pm-poster.is-full .pm-poster-days li { padding: 7px 0; }
@@ -971,4 +975,43 @@ body::after {
   background:
     radial-gradient(58% 55% at 50% 40%, var(--gold-soft), transparent 70%),
     linear-gradient(180deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%) !important;
+}
+
+/* ============================================================
+   APPLE-DESIGN ПРАВКИ
+   ============================================================ */
+
+/* §1 — миттєвий відгук на натиск (важливо для тачу, де hover нема) */
+.primary-btn:active:not(:disabled),
+.ghost-btn:active:not(:disabled),
+.hero-cta:active:not(:disabled),
+.about-cta:active:not(:disabled),
+.icon-btn:active:not(:disabled),
+.social-btn:active,
+.pm-lb-nav:active,
+.pm-lb-close:active,
+.pm-lb-full:active {
+  transform: scale(0.97);
+  transition: transform 90ms var(--pm-ease);
+}
+.pm-lb-nav:active { background: rgba(255, 255, 255, 0.26); }
+
+/* §14 — менше прозорості: робимо скло суцільним для тих, кому треба */
+@media (prefers-reduced-transparency: reduce) {
+  .site-nav, .vlb, .modal, .pm-lb-backdrop, .pm-chip.out,
+  .pm-vreview-frame, .pm-hero-side video {
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  }
+  .pm-lb-backdrop { background: rgba(6, 6, 10, 0.96); }
+  .modal { background: rgba(8, 8, 12, 0.9); }
+}
+
+/* §14 — більший контраст: чіткі межі й темніший текст */
+@media (prefers-contrast: more) {
+  .tile, .price-card, .format-card, .map-card, .review-card,
+  .pm-terms, .contacts-card, .feature, .rule {
+    border-color: var(--ink) !important;
+  }
+  .sec-sub, .price-note, .muted, .pm-perk p, .pm-timer-feats li { color: var(--ink) !important; }
+  .pm-lb-nav { border-color: #fff; }
 }

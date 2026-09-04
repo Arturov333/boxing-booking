@@ -646,6 +646,16 @@
     );
   }
 
+  /* --- Хаптик (§13): легке вібро на осмислених діях (мобільні) --- */
+  function hapticTick(ms) { try { if (navigator.vibrate) navigator.vibrate(ms || 10); } catch (e) {} }
+  function setupHaptics() {
+    if (!("vibrate" in navigator)) return;
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest && e.target.closest("#location-grid .tile, #day-grid .tile, #time-grid .tile");
+      if (t && !t.disabled && !t.classList.contains("booked")) hapticTick(12);
+    }, { passive: true });
+  }
+
   function setupPremiumCards() {
     Array.prototype.forEach.call(document.querySelectorAll(".pm-card-link"), function (card) {
       card.addEventListener("click", function (e) {
@@ -710,8 +720,43 @@
       count.textContent = (idx + 1) + " / " + PM_WEEKS.length;
       full.setAttribute("href", PM_WEEK_URL + w.n);
     }
+
+    // --- Пружина (rAF): критично здемпфована, velocity-aware, переривна (§3,4,5) ---
+    var raf = 0, pos = 0;
+    function setX(x) {
+      pos = x;
+      var p = body.firstElementChild;
+      if (p) p.style.transform = "translateX(" + x.toFixed(1) + "px)";
+    }
+    function stopSpring() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+    function spring(target, vel, onDone) {
+      stopSpring();
+      if (reduce) { setX(target); if (onDone) onDone(); return; } // §14 reduced-motion
+      var omega = 2 * Math.PI / 0.4, zeta = 1, last = null;
+      function frame(t) {
+        if (last === null) last = t;
+        var dt = Math.min((t - last) / 1000, 0.032); last = t;
+        var f = -omega * omega * (pos - target) - 2 * zeta * omega * vel;
+        vel += f * dt; setX(pos + vel * dt);
+        if (Math.abs(pos - target) < 0.5 && Math.abs(vel) < 8) { setX(target); raf = 0; if (onDone) onDone(); return; }
+        raf = requestAnimationFrame(frame);
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    function go(step, vel) {
+      idx = (idx + step + PM_WEEKS.length) % PM_WEEKS.length;
+      var w = body.clientWidth || 320;
+      spring(step > 0 ? -w * 1.05 : w * 1.05, vel || 0, function () { // §7 старий іде у бік свайпу
+        render();
+        setX(step > 0 ? w : -w);        // новий заходить із протилежного боку
+        spring(0, 0);
+      });
+      hapticTick(); // §13 — снеп на комміті
+    }
+
     function open(i) {
-      idx = i || 0; render();
+      idx = i || 0; render(); stopSpring(); setX(0);
       lastFocus = document.activeElement;
       lb.removeAttribute("hidden");
       document.body.style.overflow = "hidden";
@@ -719,12 +764,49 @@
       lb.querySelector(".pm-lb-close").focus();
     }
     function close() {
+      stopSpring();
       lb.classList.remove("is-open");
       document.body.style.overflow = "";
-      setTimeout(function () { lb.setAttribute("hidden", ""); }, 260);
+      setTimeout(function () { lb.setAttribute("hidden", ""); setX(0); }, 260);
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
-    function go(step) { idx = (idx + step + PM_WEEKS.length) % PM_WEEKS.length; render(); }
+
+    // --- 1:1 свайп із передачею швидкості та проєкцією інерції (§2,3,5,6) ---
+    var drag = null;
+    function project(v) { return (v / 1000) * 0.99 / (1 - 0.99); }
+    body.addEventListener("pointerdown", function (e) {
+      if (e.button != null && e.button !== 0) return;
+      stopSpring(); // перехопити анімацію на льоту
+      drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, base: pos, lx: e.clientX, lt: (e.timeStamp || performance.now()), v: 0, axis: 0 };
+    });
+    body.addEventListener("pointermove", function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x0, dy = e.clientY - drag.y0;
+      if (drag.axis === 0) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+        drag.axis = Math.abs(dx) > Math.abs(dy) ? 1 : -1;
+        if (drag.axis === 1) { try { body.setPointerCapture(drag.id); } catch (e2) {} }
+      }
+      if (drag.axis !== 1) return;
+      e.preventDefault();
+      var now = e.timeStamp || performance.now();
+      var d = e.clientX - drag.lx, dt = (now - drag.lt) || 16;
+      drag.v = d / dt * 1000;
+      drag.lx = e.clientX; drag.lt = now;
+      setX(drag.base + dx);
+    });
+    function endDrag(e) {
+      if (!drag || (e && e.pointerId !== drag.id)) return;
+      var d = drag; drag = null;
+      if (d.axis !== 1) return;
+      var w = body.clientWidth || 320;
+      var projected = pos + project(d.v);
+      if (projected < -w * 0.28) go(1, d.v);
+      else if (projected > w * 0.28) go(-1, d.v);
+      else spring(0, d.v);
+    }
+    body.addEventListener("pointerup", endDrag);
+    body.addEventListener("pointercancel", endDrag);
 
     pile.addEventListener("click", function (e) {
       var c = e.target.closest(".pm-week");
@@ -850,6 +932,7 @@
     try { setupVideoReview(); } catch (e) {}
     try { setupPremiumCards(); } catch (e) {}
     try { buildPremiumWeeks(); } catch (e) {}
+    try { setupHaptics(); } catch (e) {}
     try { setupAmbientGallery(); } catch (e) {}
     try { setupReveal(); } catch (e) {}
     try { setupCounters(); } catch (e) {}
