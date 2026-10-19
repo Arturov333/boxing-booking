@@ -15,8 +15,8 @@ const firebaseConfig = {
 
 // Two training locations (identity only — working hours live in the schedule below).
 const LOCATIONS = [
-  { id: "loc1", name: "Замарстинівська 55Б", address: "вул. Замарстинівська, 55Б" },
-  { id: "loc2", name: "Total Fitness",        address: "просп. Чорновола, 67Г · Львів" },
+  { id: "loc1", name: "Замарстинівська 55Б", short: "Замарстинівська", address: "вул. Замарстинівська, 55Б" },
+  { id: "loc2", name: "Total Fitness",        short: "Total Fitness",   address: "просп. Чорновола, 67Г · Львів" },
 ];
 
 // Admin access code (client-side gate — change after deploy)
@@ -340,16 +340,43 @@ function renderDays() {
     b.type = "button";
     b.className = "tile";
     if (state.selectedDate === iso) b.classList.add("selected");
-    // Disable past whole days
+    // Минулі дні — недоступні
     const endOfDay = new Date(date); endOfDay.setHours(23, 59, 59, 999);
-    if (endOfDay.getTime() < Date.now()) b.disabled = true;
-    // Days the selected location does not work — показуємо перекресленими
+    const past = endOfDay.getTime() < Date.now();
+    if (past) b.disabled = true;
+
+    // День, коли обрана локація не працює — перекреслюємо й показуємо, де є зал
+    let switchLoc = null;
     if (state.selectedLocation && !isDayAllowed(state.selectedLocation, iso)) {
-      b.disabled = true;
       b.classList.add("day-off");
+      const openLoc = LOCATIONS.find((l) => isDayAllowed(l.id, iso));
+      if (openLoc) {
+        b.setAttribute("data-off-label", openLoc.short);
+        if (!past) {
+          switchLoc = openLoc.id;
+          b.classList.add("day-switch");
+          b.setAttribute("title", `Цей день — у залі «${openLoc.short}». Натисни, щоб перемкнути.`);
+        } else {
+          b.disabled = true;
+        }
+      } else {
+        b.setAttribute("data-off-label", "вихідний");
+        b.disabled = true;
+      }
     }
+
     b.innerHTML = `${DAYS_UA[i]}<span class="tile-sub">${fmtDateShort(date)}</span>`;
     b.addEventListener("click", () => {
+      if (switchLoc) { // перекреслений день: перемкнути на зал, що працює
+        state.selectedLocation = switchLoc;
+        state.selectedDate = iso;
+        state.selectedTime = null;
+        renderLocations();
+        renderDays();
+        renderTimes();
+        updateSubmit();
+        return;
+      }
       state.selectedDate = iso;
       state.selectedTime = null;
       renderDays();
