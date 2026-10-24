@@ -19,9 +19,8 @@ const LOCATIONS = [
   { id: "loc2", name: "Total Fitness",        short: "Total Fitness",   address: "просп. Чорновола, 67Г · Львів" },
 ];
 
-// Admin access code (client-side gate — change after deploy)
-// Note: real security comes from Firestore rules, not this code.
-const ADMIN_CODE = "13579";
+// Admin access: the trainer signs in with Firebase Auth (email + password).
+// Who is admin is decided ONLY by Firestore rules (UID list in firestore.rules).
 
 // ------------------------------------------------------------
 // SCHEDULE — DEFAULT working hours, per location, per weekday.
@@ -88,6 +87,7 @@ const DAYS_FULL_UA = ["Понеділок", "Вівторок", "Середа", 
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 function collection(dbi, name) { return dbi.collection(name); }
 function doc(dbi, name, id) { return dbi.collection(name).doc(id); }
@@ -109,6 +109,27 @@ function getDocs(q) { return q.get(); }
 
 const bookingsRef = collection(db, "bookings");
 const reviewsRef = collection(db, "reviews");
+// Public mirror of bookings: only location/date/time (no names/phones), same doc id.
+// Visitors read this; full `bookings` are readable by the admin only (see firestore.rules).
+const slotsRef = collection(db, "slots");
+
+function slotOf(b) { return { location: b.location, date: b.date, time: b.time }; }
+
+// Create booking + its public slot atomically (rules require both together).
+function addBookingWithSlot(data) {
+  const ref = bookingsRef.doc();
+  const batch = db.batch();
+  batch.set(ref, data);
+  batch.set(slotsRef.doc(ref.id), slotOf(data));
+  return batch.commit();
+}
+
+function deleteBookingWithSlot(id) {
+  const batch = db.batch();
+  batch.delete(doc(db, "bookings", id));
+  batch.delete(doc(db, "slots", id));
+  return batch.commit();
+}
 const settingsDoc = doc(db, "settings", "schedule"); // { hours: { loc1: {...}, loc2: {...} } }
 
 // ============================================================
@@ -293,7 +314,8 @@ const el = {
   // admin
   openAdmin: document.getElementById("open-admin"),
   adminModal: document.getElementById("admin-modal"),
-  adminCodeInput: document.getElementById("admin-code-input"),
+  adminEmailInput: document.getElementById("admin-email-input"),
+  adminPasswordInput: document.getElementById("admin-password-input"),
   adminLogin: document.getElementById("admin-login"),
   adminCancel: document.getElementById("admin-cancel"),
   adminError: document.getElementById("admin-error"),
@@ -463,11 +485,16 @@ function updateSubmit() {
 // FIRESTORE SUBSCRIPTIONS
 // ============================================================
 
+// state.bookings is fed from ONE source at a time: public `slots` for visitors,
+// full `bookings` for the signed-in admin.
+let unsubBookings = null;
+
 function subscribeBookings() {
+  if (unsubBookings) unsubBookings();
   // Order by date only (single-field index is automatic in Firestore);
   // time is sorted client-side in renderAdminList, so no composite index needed.
-  const q = query(bookingsRef, orderBy("date"));
-  onSnapshot(q, (snap) => {
+  const q = query(state.isAdmin ? bookingsRef : slotsRef, orderBy("date"));
+  unsubBookings = onSnapshot(q, (snap) => {
     state.bookings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderTimes();
     if (state.isAdmin) renderAdminList();
@@ -475,6 +502,25 @@ function subscribeBookings() {
     console.error("Firestore subscription error:", err);
     el.slotsStatus.textContent = "Помилка з'єднання з базою. Перевір налаштування Firebase.";
   });
+}
+
+// Admin only: make `slots` match `bookings` (backfills bookings made before
+// slots existed, removes slots of deleted bookings).
+async function syncSlots() {
+  const [bSnap, sSnap] = await Promise.all([bookingsRef.get(), slotsRef.get()]);
+  const slots = new Map(sSnap.docs.map(d => [d.id, d.data()]));
+  const batch = db.batch();
+  let n = 0;
+  bSnap.docs.forEach((d) => {
+    const want = slotOf(d.data());
+    const have = slots.get(d.id);
+    if (!have || have.location !== want.location || have.date !== want.date || have.time !== want.time) {
+      batch.set(slotsRef.doc(d.id), want); n++;
+    }
+    slots.delete(d.id);
+  });
+  slots.forEach((_, id) => { batch.delete(slotsRef.doc(id)); n++; });
+  if (n > 0) await batch.commit();
 }
 
 // ============================================================
@@ -516,7 +562,7 @@ el.form.addEventListener("submit", async (e) => {
   try {
     el.submitBtn.disabled = true;
     showFormMessage(isRequest ? "Надсилаємо запит..." : "Записуємо...", "");
-    await addDoc(bookingsRef, data);
+    await addBookingWithSlot(data);
     showFormMessage(
       isRequest
         ? `✓ Запит надіслано! ${data.name}, тренер перевірить, чи встигає на ${data.time} (${fmtDateShort(new Date(data.date))}), і напише тобі.`
@@ -543,28 +589,52 @@ function showFormMessage(text, kind) {
 // ADMIN — login / view toggle
 // ============================================================
 
+// The signed-in account is admin only if Firestore rules let it read `bookings`.
+async function enterAdmin() {
+  try {
+    await bookingsRef.limit(1).get();
+  } catch (err) {
+    await auth.signOut();
+    throw new Error("Цей акаунт не має доступу до адмінки");
+  }
+  state.isAdmin = true;
+  subscribeBookings();
+  showAdmin();
+  syncSlots().catch((err) => console.error("Slots sync error:", err));
+}
+
 el.openAdmin.addEventListener("click", () => {
   if (state.isAdmin) {
     showAdmin();
+  } else if (auth.currentUser) {
+    enterAdmin().catch(() => el.openAdmin.click());
   } else {
     el.adminModal.classList.remove("hidden");
-    el.adminCodeInput.value = "";
+    el.adminPasswordInput.value = "";
     el.adminError.textContent = "";
-    setTimeout(() => el.adminCodeInput.focus(), 50);
+    setTimeout(() => el.adminEmailInput.focus(), 50);
   }
 });
 
 el.adminCancel.addEventListener("click", () => el.adminModal.classList.add("hidden"));
-el.adminCodeInput.addEventListener("keydown", (e) => {
+el.adminPasswordInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") el.adminLogin.click();
 });
-el.adminLogin.addEventListener("click", () => {
-  if (el.adminCodeInput.value === ADMIN_CODE) {
-    state.isAdmin = true;
+el.adminLogin.addEventListener("click", async () => {
+  const email = el.adminEmailInput.value.trim();
+  const password = el.adminPasswordInput.value;
+  if (!email || !password) { el.adminError.textContent = "Введи email і пароль"; return; }
+  el.adminLogin.disabled = true;
+  el.adminError.textContent = "";
+  try {
+    await auth.signInWithEmailAndPassword(email, password);
+    await enterAdmin();
     el.adminModal.classList.add("hidden");
-    showAdmin();
-  } else {
-    el.adminError.textContent = "Невірний код";
+  } catch (err) {
+    console.error(err);
+    el.adminError.textContent = err.message && !err.code ? err.message : "Невірний email або пароль";
+  } finally {
+    el.adminLogin.disabled = false;
   }
 });
 
@@ -573,6 +643,8 @@ el.closeAdmin.addEventListener("click", () => {
   el.adminView.classList.add("hidden");
   el.clientView.classList.remove("hidden");
   document.body.classList.remove("admin-active");
+  auth.signOut().catch((err) => console.error(err));
+  subscribeBookings(); // back to public slots
 });
 
 el.refreshAdmin.addEventListener("click", async () => {
@@ -663,7 +735,7 @@ function renderAdminList() {
     row.querySelector("[data-id]").addEventListener("click", async () => {
       if (!confirm(`Скасувати запис: ${b.name} — ${b.date} ${b.time}?`)) return;
       try {
-        await deleteDoc(doc(db, "bookings", b.id));
+        await deleteBookingWithSlot(b.id);
       } catch (err) {
         alert("Помилка скасування: " + err.message);
       }
@@ -752,7 +824,7 @@ async function submitManualBooking() {
 
   try {
     msg.textContent = "Додаємо..."; msg.className = "form-message";
-    await addDoc(bookingsRef, data);
+    await addBookingWithSlot(data);
     msg.textContent = "✓ Запис додано"; msg.className = "form-message success";
     nameInp.value = ""; phoneInp.value = "";
     setTimeout(() => { msg.textContent = ""; }, 2500);
