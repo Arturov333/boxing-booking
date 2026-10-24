@@ -19,8 +19,10 @@ const LOCATIONS = [
   { id: "loc2", name: "Total Fitness",        short: "Total Fitness",   address: "просп. Чорновола, 67Г · Львів" },
 ];
 
-// Admin access: the trainer signs in with Firebase Auth (email + password).
-// Who is admin is decided ONLY by Firestore rules (UID list in firestore.rules).
+// Admin access: the trainer types only a code; it is the password of a fixed
+// Firebase Auth account (the code itself is NOT stored here). Who is admin is
+// decided ONLY by Firestore rules (this email in firestore.rules).
+const ADMIN_EMAIL = "admin@boxing-booking-17e44.firebaseapp.com";
 
 // ------------------------------------------------------------
 // SCHEDULE — DEFAULT working hours, per location, per weekday.
@@ -314,8 +316,7 @@ const el = {
   // admin
   openAdmin: document.getElementById("open-admin"),
   adminModal: document.getElementById("admin-modal"),
-  adminEmailInput: document.getElementById("admin-email-input"),
-  adminPasswordInput: document.getElementById("admin-password-input"),
+  adminPasswordInput: document.getElementById("admin-code-input"),
   adminLogin: document.getElementById("admin-login"),
   adminCancel: document.getElementById("admin-cancel"),
   adminError: document.getElementById("admin-error"),
@@ -612,7 +613,7 @@ el.openAdmin.addEventListener("click", () => {
     el.adminModal.classList.remove("hidden");
     el.adminPasswordInput.value = "";
     el.adminError.textContent = "";
-    setTimeout(() => el.adminEmailInput.focus(), 50);
+    setTimeout(() => el.adminPasswordInput.focus(), 50);
   }
 });
 
@@ -621,18 +622,17 @@ el.adminPasswordInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") el.adminLogin.click();
 });
 el.adminLogin.addEventListener("click", async () => {
-  const email = el.adminEmailInput.value.trim();
   const password = el.adminPasswordInput.value;
-  if (!email || !password) { el.adminError.textContent = "Введи email і пароль"; return; }
+  if (!password) { el.adminError.textContent = "Введи код"; return; }
   el.adminLogin.disabled = true;
   el.adminError.textContent = "";
   try {
-    await auth.signInWithEmailAndPassword(email, password);
+    await auth.signInWithEmailAndPassword(ADMIN_EMAIL, password);
     await enterAdmin();
     el.adminModal.classList.add("hidden");
   } catch (err) {
     console.error(err);
-    el.adminError.textContent = err.message && !err.code ? err.message : "Невірний email або пароль";
+    el.adminError.textContent = err.message && !err.code ? err.message : "Невірний код";
   } finally {
     el.adminLogin.disabled = false;
   }

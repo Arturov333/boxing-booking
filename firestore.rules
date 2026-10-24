@@ -5,7 +5,7 @@ rules_version = '2';
 // Модель доступу:
 //  • Клієнт (без входу): створює запис, бачить ЛИШЕ зайняті слоти (колекція
 //    `slots` — локація/дата/час, без імен і телефонів), читає й залишає відгуки.
-//  • Тренер (вхід через Firebase Auth, акаунт із UID у списку нижче): бачить і
+//  • Тренер (вводить код = пароль службового акаунта Firebase Auth): бачить і
 //    змінює всі записи, керує розкладом і відгуками.
 //
 // Кожен запис = 2 документи з однаковим ID, що створюються одним batch:
@@ -14,11 +14,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ⚠️ Встав сюди UID акаунта тренера
-    // (Firebase Console → Authentication → Users → стовпець «User UID»).
+    // Тренер = службовий акаунт Firebase Auth з цим email (пароль = код адмінки).
+    // Має збігатися з ADMIN_EMAIL у script.js.
     function isAdmin() {
       return request.auth != null
-        && request.auth.uid in ['PASTE_ADMIN_UID_HERE'];
+        && request.auth.token.email == 'admin@boxing-booking-17e44.firebaseapp.com';
     }
 
     function optStr(d, key, max) {
