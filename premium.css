@@ -1025,3 +1025,45 @@ body::after {
   .sec-sub, .price-note, .muted, .pm-perk p, .pm-timer-feats li { color: var(--ink) !important; }
   .pm-lb-nav { border-color: #fff; }
 }
+
+/* ================= ETALON (Athletics): плоско, 2 радіуси, більше повітря =================
+   Шрифти, кольори й градієнти не чіпаємо. Фокус-кільця полів і смужка вибраного слота лишаються. */
+:root {
+  --radius-card: 12px;
+  --radius-pill: 999px;
+  --section-gap: clamp(96px, 10vw, 128px);
+  --card-shadow: none;
+  --radius: var(--radius-card);
+  --radius-sm: var(--radius-card);
+}
+
+/* 3. Повітря між секціями */
+.sec, .sec-contacts { margin: var(--section-gap) 0; }
+.sec-booking { margin-bottom: var(--section-gap); }
+
+/* 1. Без тіней: картки й кнопки — лише рамка 1px */
+.feature, .result, .price-card, .format-card, .map-card, .rule, .review, .gtile,
+.faq-item, .contacts-card, .admin-row, .tile, .tile.selected, .pm-terms, .pm-poster, .pm-week, .pm-vreview-frame,
+.feature:hover, .result:hover, .price-card:hover, .format-card:hover, .rule:hover, .review:hover,
+.gtile:hover, .admin-row:hover, .price-card.featured, .price-card.featured:hover,
+.price-card.premium.pm-card-link:hover, .tile:hover:not(:disabled):not(.booked),
+.tile:hover:not(:disabled):not(.booked):not(.selected), .tile.maybe:hover:not(:disabled),
+[data-theme="light"] .format-card:hover, [data-theme="light"] .feature:hover,
+[data-theme="light"] .result:hover, [data-theme="light"] .rule:hover, [data-theme="light"] .price-card:hover,
+.primary-btn, .primary-btn:hover:not(:disabled), .ghost-btn, .social-btn, .social-btn:hover,
+.hero-cta, .hero-cta:hover, .sticky-cta, .pm-float-cta, #submit-btn:not(:disabled),
+.pm-vreview-play, .nav-links a.active {
+  box-shadow: var(--card-shadow) !important;
+}
+
+/* 2. Два радіуси: 12px — картки/фото/контейнери/поля, 999px — кнопки й теги */
+.modal-card, .vlb-video, .pm-week, .pm-poster, .pm-photo, .pm-hero-side video,
+.hero-media .hero-video, .feat-ic, .pm-deck:focus-visible,
+.form input, .modal-card input, .modal-card textarea,
+.admin-form input, .admin-form select, .admin-form textarea, .sched-times select {
+  border-radius: var(--radius-card);
+}
+.primary-btn, .ghost-btn, .ghost-btn.icon, .icon-btn, .social-btn, .sticky-cta, .pm-float-cta,
+.hero-cta, .nav-links a, .pm-hero-badge, .pm-chip, .price-badge, .pm-lb-nav, .pm-vreview-play {
+  border-radius: var(--radius-pill);
+}
